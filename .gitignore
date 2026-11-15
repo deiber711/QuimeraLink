@@ -1,0 +1,40 @@
+# Entornos y cachés de Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Capturas generadas (no se publican automáticamente)
+capturas/
+screenshots/
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.pdf
+
+# Configuración sensible y datos de navegación locales
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+cookies*.json
+storage_state*.json
+auth.json
+playwright/.auth/
+browser-profile/
+user-data/
+*.har
+*.log
+
+# Editores y sistema operativo
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini

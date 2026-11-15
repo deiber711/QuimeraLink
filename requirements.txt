@@ -1,0 +1,2 @@
+# Dependencia directa instalada en el equipo al preparar la v1.0.
+playwright==1.65.2
