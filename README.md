@@ -1,79 +1,43 @@
-# Detector de phishing — v1.0
+# Detector de phishing · v1.1 para Windows
 
-Proyecto de aprendizaje desarrollado por etapas. Esta primera versión obtiene
-capturas de páginas web como base para un futuro detector de phishing.
+Abre el ejecutable **DetectorDePhishing.exe**, pega un enlace y pulsa **Analizar enlace**. El programa muestra el dominio de destino y explica las señales encontradas. Revisa la dirección en tu equipo sin abrirla, enviarla a un servicio ni guardar un historial. Un resultado sin señales deja la autenticidad del sitio sin confirmar.
 
-**Estado actual:** captura de pantalla implementada. No clasifica sitios como
-legítimos o maliciosos y no incorpora todavía la privacidad y el aislamiento
-previstos para la v1.1.
+**Ver captura** visita la dirección desde tu conexión. El sitio puede ver tu IP y recibir identificadores incluidos en el enlace. La vista previa muestra una imagen en memoria. Usa un perfil temporal de Chromium con su sandbox, JavaScript habilitado para dibujar la página y descargas deshabilitadas. Solo solicita recursos HTTP o HTTPS públicos, incluidos estilos, fuentes e imágenes de otros dominios, sin seguir redirecciones HTTP ni pulsar botones. Algunas páginas se verán incompletas o no cargarán. Cierra la ventana para descartar la imagen.
 
-## Funciones
+## Alcance de las reglas
 
-- Abre una URL con Chromium mediante Playwright, sin mostrar una ventana.
-- Guarda la ventana visible o la página completa con `--full`.
-- Intenta aceptar banners de cookies y cerrar algunos modales conocidos.
-- Desactiva animaciones y espera a que cargue el contenido antes de capturar.
-- Ofrece un modo interactivo y otro mediante argumentos de consola.
+El análisis identifica HTTP sin cifrar, direcciones numéricas, credenciales en la URL, nombres internacionales y similitudes sencillas con PayPal y Bancolombia. Son indicios que también pueden aparecer en sitios legítimos. La revisión se limita a la dirección escrita. La captura opcional no modifica el resultado.
 
-## Instalación en Windows (PowerShell)
+## Desarrollo y distribución
 
-Usa Python 3.10 o superior. La preparación de esta versión se verificó con
-Python 3.13 y Playwright 1.65.2.
-
-Desde la carpeta del proyecto:
+Desde Windows con Python 3.10 o superior y Tkinter:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m playwright install chromium
+python -m pip install -r requirements.txt
+python -m playwright install chromium
+python main.py
+python -m unittest
 ```
 
-El entorno `.venv` mantiene las dependencias de este proyecto separadas de las
-de otros proyectos. No es una barrera de seguridad para navegar sitios.
-La descarga de Chromium se realiza por separado de la instalación de Playwright.
-
-## Uso
-
-Modo interactivo:
+Para generar la descarga que se distribuye a los usuarios:
 
 ```powershell
-.\.venv\Scripts\python.exe main.py
+python -m pip install pyinstaller
+.\construir.ps1
 ```
 
-Puedes introducir un dominio sin `https://` en el modo interactivo. Deja la
-entrada vacía para salir y pulsa Enter cuando aparezca la pausa final.
+El archivo resultante es `dist/DetectorDePhishing.exe`. Incluye Python, la interfaz y Chromium. El usuario solo necesita el ejecutable. La compilación usa la revisión de Chromium correspondiente a la versión de Playwright instalada.
 
-Desde la línea de comandos, utiliza la URL completa:
+## Consola
 
 ```powershell
-.\.venv\Scripts\python.exe main.py https://example.com capturas/ejemplo.png
-.\.venv\Scripts\python.exe main.py https://example.com capturas/ejemplo-completo.png --full
-.\.venv\Scripts\python.exe main.py --help
+python main.py https://example.com
+python main.py https://example.com --captura
+python main.py https://example.com capturas/ejemplo.png --full
 ```
 
-Si omites el archivo de salida, se genera un nombre basado en el dominio en
-la carpeta actual. Una captura nueva puede sobrescribir otra con el mismo nombre.
+Una URL sola solicita análisis. Una ruta de salida, `--captura` o `--full` solicita también la imagen. La consola puede conservar los argumentos en su historial. Para enlaces sensibles, utiliza la ventana de escritorio.
 
-## Límites de la v1.0
+## Reutilización
 
-El navegador realiza conexiones reales y ejecuta JavaScript del sitio. Su
-contexto nuevo no oculta la IP ni proporciona aislamiento de red. Los botones
-de cookies pueden aceptar cookies; el resultado depende de cada página.
-Usa páginas de prueba conocidas durante esta etapa y evita introducir datos
-personales. Una captura no demuestra que una página sea segura.
-
-## Archivos del proyecto
-
-| Archivo | Propósito |
-| --- | --- |
-| `main.py` | Código original de captura de la v1.0. |
-| `requirements.txt` | Versión de la dependencia directa. |
-| `.gitignore` | Exclusiones para Git: entorno, capturas y archivos locales sensibles. |
-| `.gitattributes` | Normalización de finales de línea en archivos de texto. |
-| `CHANGELOG.md` | Historial de cambios por versión. |
-| `GUIA_GITHUB.md` | Pasos para publicar en un repositorio privado. |
-
-## Siguiente etapa
-
-La v1.1 abordará privacidad y aislamiento. Su diseño e implementación quedan
-pendientes; este repositorio conserva el comportamiento original de la v1.0.
+`analisis.analizar(texto)` devuelve el dominio normalizado, las señales y la dirección apta para una captura opcional. La dirección puede contener parámetros privados y debe tratarse como dato sensible. El módulo usa solo la biblioteca estándar y puede llamarse desde otra interfaz o un servicio Python. Los casos en `test_analisis.py` sirven de referencia para futuros clientes. La interfaz está en `escritorio.py` y la navegación en `captura.py`.

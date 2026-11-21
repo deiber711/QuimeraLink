@@ -38,3 +38,7 @@ user-data/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+build/
+dist/
+*.spec
