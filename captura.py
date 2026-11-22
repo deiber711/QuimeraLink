@@ -4,11 +4,11 @@ import socket
 import ssl
 import sys
 from functools import lru_cache
-from ipaddress import ip_address
 from pathlib import Path
 from urllib.parse import urlsplit
 
 from analisis import analizar
+from red import resolver_publico
 
 
 def imagen(url, *, full_page=False, ancho=1200, alto=800, timeout_ms=45000, espera_ms=1200):
@@ -17,13 +17,7 @@ def imagen(url, *, full_page=False, ancho=1200, alto=800, timeout_ms=45000, espe
     url = analizar(url).url_captura
     if not url:
         raise ValueError("La vista previa requiere una dirección pública sin credenciales.")
-    @lru_cache(maxsize=128)
-    def resolver(host, puerto):
-        direcciones = socket.getaddrinfo(host, puerto, type=socket.SOCK_STREAM)
-        ips = [ip_address(d[4][0]) for d in direcciones]
-        if not ips or any(not ip.is_global or ip.is_multicast for ip in ips):
-            raise ValueError("La vista previa solo admite destinos públicos.")
-        return str(next((ip for ip in ips if ip.version == 4), ips[0]))
+    resolver = lru_cache(maxsize=128)(resolver_publico)
 
     origen = urlsplit(url)
     resolver(origen.hostname, origen.port or (443 if origen.scheme == "https" else 80))

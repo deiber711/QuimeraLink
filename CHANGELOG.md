@@ -1,5 +1,20 @@
 # Historial de cambios
 
+## En desarrollo
+
+- Analizadores de URL y marca separados e integrados en escritorio y consola. La URL se analiza localmente con la lista de sufijos incluida, normalización IDNA y señales para IP literales, credenciales y acortadores.
+- Catálogo local de 197 marcas, entidades y servicios, incluidas Agaval y Falabella Colombia. Registra las fuentes de 262 dominios y hosts y distingue 13 sufijos de autenticación compartida.
+- Detección de nombres parecidos y caracteres confusos en dominios y subdominios, con coincidencias oficiales verificadas y 35 puntos sugeridos por indicios de suplantación.
+- La inspección compara dominios registrables en cada redirección, distingue el origen final del destino anunciado y señala HTML que menciona una marca y solicita datos desde un dominio ajeno a su catálogo.
+- Lanzador de desarrollo `iniciar.cmd`, dependencias de pruebas y suite `pytest` para referencias oficiales, redirecciones, imitaciones y enlaces acortados.
+
+## v1.2
+
+- Inspección web opcional en escritorio y consola con `--inspeccionar`.
+- Recorrido de redirecciones, estados HTTP, dominio final, título y destinos de formularios a partir del HTML estático.
+- Señales de cambios de dominio, redirecciones de HTTPS a HTTP y formularios de contraseña con destinos de otro origen o sin cifrado.
+- Validación de destinos públicos en cada salto, límites de tiempo y tamaño e informes parciales cuando la inspección se interrumpe.
+
 ## v1.1
 
 - Aplicación de escritorio para Windows con análisis local y advertencias explicadas.

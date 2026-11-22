@@ -1,0 +1,2511 @@
+{
+  "fecha_revision": "2026-11-21",
+  "marcas": [
+    {
+      "nombre": "Bancolombia",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancolombia",
+        "grupobancolombia"
+      ],
+      "dominios": {
+        "bancolombia.com": "https://www.bancolombia.com/centro-de-ayuda/preguntas-frecuentes/identificar-sitio-web-nueva-imagen",
+        "bancolombia.com.co": "https://www.bancolombia.com/centro-de-ayuda/preguntas-frecuentes/identificar-sitio-web-nueva-imagen"
+      },
+      "hosts": {
+        "bancol.co": "https://www.bancolombia.com/personas/canales/fraude"
+      },
+      "autenticacion": {
+        "sucursalvirtualpersonas.bancolombia.com.co": "https://www.bancolombia.com/wcm/connect/www.bancolombia.com-26918/15323d05-ebac-45a3-88b1-6e7aff9406b8/Reglamento%2BSVP%2Bv2%2Bsept%2B2015.pdf?CVID=nVP-ZSs&MOD=AJPERES"
+      }
+    },
+    {
+      "nombre": "Davivienda",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "davivienda"
+      ],
+      "dominios": {
+        "davivienda.com": "https://www.davivienda.com/wps/portal/personas/nuevo/personas/canales_de_atencion/para_todos/davivienda_com/%21ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zijS0CTfy8nIx8TfyDjA0cXcOcvcIMg4z9PY31w1EVBLtZAhX4GgQ7O1r6G_q7G-lHEaPfAAdwNCBOPx4FUfiND9ePwmuFvwkBBRYG6AqwhAE-BQZu5lAFeJxZkBsaGmGQ6ZnpqKgIAJLByTE%21/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
+      }
+    },
+    {
+      "nombre": "Banco de Bogotá",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancodebogota"
+      ],
+      "dominios": {
+        "bancodebogota.com.co": "https://portalst.bancodebogota.com.co/"
+      }
+    },
+    {
+      "nombre": "BBVA",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "bbva"
+      ],
+      "dominios": {
+        "bbva.com.co": "https://www.bbva.com.co/",
+        "bbva.com": "https://www.bbva.com/"
+      }
+    },
+    {
+      "nombre": "Banco de Occidente",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "bancodeoccidente"
+      ],
+      "dominios": {
+        "bancodeoccidente.com.co": "https://portalpublico.bancodeoccidente.com.co/es/inicio"
+      }
+    },
+    {
+      "nombre": "Banco Popular",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "bancopopular"
+      ],
+      "dominios": {
+        "bancopopular.com.co": "https://www.bancopopular.com.co/"
+      }
+    },
+    {
+      "nombre": "Banco AV Villas",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "avvillas",
+        "bancoavvillas"
+      ],
+      "dominios": {
+        "avvillas.com.co": "https://www.avvillas.com.co/"
+      }
+    },
+    {
+      "nombre": "Banco Caja Social",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancocajasocial"
+      ],
+      "dominios": {
+        "bancocajasocial.com": "https://www.bancocajasocial.com/"
+      }
+    },
+    {
+      "nombre": "Banco Agrario",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "bancoagrario"
+      ],
+      "dominios": {
+        "bancoagrario.gov.co": "https://www.bancoagrario.gov.co/"
+      }
+    },
+    {
+      "nombre": "Itaú Colombia",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "itau"
+      ],
+      "dominios": {
+        "itau.co": "https://www.itau.co/"
+      }
+    },
+    {
+      "nombre": "DAVIbank",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "davibank",
+        "scotiabankcolpatria"
+      ],
+      "dominios": {
+        "davibank.com": "https://www.davibank.com/"
+      },
+      "autenticacion": {
+        "www.banco.scotiabankcolpatria.com": "https://www.davibank.com/integracion",
+        "www.bancaempresarial.scotiabankcolpatria.com": "https://www.davibank.com/integracion",
+        "ccop.scotiabank.com": "https://www.davibank.com/integracion"
+      }
+    },
+    {
+      "nombre": "Banco Falabella",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancofalabella"
+      ],
+      "dominios": {
+        "bancofalabella.com.co": "https://www.bancofalabella.com.co/"
+      }
+    },
+    {
+      "nombre": "Banco Pichincha",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "bancopichincha",
+        "pichincha"
+      ],
+      "dominios": {
+        "bancopichincha.com.co": "https://www.bancopichincha.com.co/frontend/login/",
+        "pichincha.com": "https://www.pichincha.com/"
+      }
+    },
+    {
+      "nombre": "Bancoomeva",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancoomeva"
+      ],
+      "dominios": {
+        "bancoomeva.com.co": "https://www.bancoomeva.com.co/"
+      }
+    },
+    {
+      "nombre": "Banco Serfinanza",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancoserfinanza",
+        "serfinanza"
+      ],
+      "dominios": {
+        "bancoserfinanza.com": "https://bancoserfinanza.com/banco-serfinanza/"
+      }
+    },
+    {
+      "nombre": "Banco W",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "bancow",
+        "bancodobleu"
+      ],
+      "dominios": {
+        "bancow.com.co": "https://www.bancow.com.co/"
+      }
+    },
+    {
+      "nombre": "Banco Mundo Mujer",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancomundomujer"
+      ],
+      "contextuales": [
+        "mundomujer",
+        "bmm"
+      ],
+      "dominios": {
+        "bmm.com.co": "https://www.bmm.com.co/"
+      }
+    },
+    {
+      "nombre": "Banco Finandina",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancofinandina",
+        "finandina"
+      ],
+      "dominios": {
+        "bancofinandina.com": "https://www.bancofinandina.com/"
+      }
+    },
+    {
+      "nombre": "Santander",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "santander",
+        "bancosantander"
+      ],
+      "dominios": {
+        "santander.com.co": "https://www.santander.com.co/",
+        "santander.com": "https://www.santander.com/"
+      }
+    },
+    {
+      "nombre": "Banco GNB Sudameris",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "gnbsudameris",
+        "sudameris"
+      ],
+      "contextuales": [
+        "gnb"
+      ],
+      "dominios": {
+        "gnbsudameris.com.co": "https://www.gnbsudameris.com.co/"
+      }
+    },
+    {
+      "nombre": "Banco Coopcentral",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "coopcentral"
+      ],
+      "dominios": {
+        "coopcentral.com.co": "https://www.coopcentral.com.co/"
+      }
+    },
+    {
+      "nombre": "Banco Contactar",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancocontactar"
+      ],
+      "dominios": {
+        "bancocontactar.com": "https://www.bancocontactar.com/"
+      }
+    },
+    {
+      "nombre": "Mibanco Colombia",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "mibanco"
+      ],
+      "dominios": {
+        "mibanco.com.co": "https://www.mibanco.com.co/"
+      }
+    },
+    {
+      "nombre": "Nequi",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "nequi"
+      ],
+      "dominios": {
+        "nequi.com.co": "https://www.nequi.com.co/"
+      }
+    },
+    {
+      "nombre": "DaviPlata",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "daviplata"
+      ],
+      "dominios": {
+        "daviplata.com": "https://www.daviplata.com/"
+      }
+    },
+    {
+      "nombre": "Transfiya",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "transfiya"
+      ],
+      "dominios": {
+        "transfiya.com.co": "https://www.achcolombia.com.co/ach-blog-col/-/blogs/transfiya-consejos-claves-para-mover-tu-dinero-con-total-seguridad"
+      }
+    },
+    {
+      "nombre": "PSE",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "pse"
+      ],
+      "dominios": {
+        "pse.com.co": "https://www.pse.com.co/"
+      },
+      "autenticacion": {
+        "registro.pse.com.co": "https://www.pse.com.co/persona-tu-primer-pago-por-pse"
+      }
+    },
+    {
+      "nombre": "dale!",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "dale"
+      ],
+      "dominios": {
+        "dale.com.co": "https://www.dale.com.co/"
+      }
+    },
+    {
+      "nombre": "MOVii",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "movii"
+      ],
+      "dominios": {
+        "movii.com.co": "https://www.movii.com.co/"
+      }
+    },
+    {
+      "nombre": "Lulo Bank",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "lulobank"
+      ],
+      "contextuales": [
+        "lulo"
+      ],
+      "dominios": {
+        "lulobank.com": "https://www.lulobank.com/"
+      }
+    },
+    {
+      "nombre": "Nu",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "nubank"
+      ],
+      "contextuales": [
+        "nu"
+      ],
+      "dominios": {
+        "nu.com.co": "https://nu.com.co/"
+      }
+    },
+    {
+      "nombre": "RappiPay",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "rappipay",
+        "rappicuenta"
+      ],
+      "dominios": {
+        "rappipay.co": "https://www.rappipay.co/centro-de-ayuda/"
+      }
+    },
+    {
+      "nombre": "Ualá",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "uala"
+      ],
+      "dominios": {
+        "uala.com.co": "https://www.uala.com.co/"
+      }
+    },
+    {
+      "nombre": "tyba",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "tyba"
+      ],
+      "dominios": {
+        "tyba.com.co": "https://tyba.com.co/"
+      }
+    },
+    {
+      "nombre": "Addi",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "addi"
+      ],
+      "dominios": {
+        "addi.com": "https://co.addi.com/"
+      }
+    },
+    {
+      "nombre": "Bold",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "bold"
+      ],
+      "dominios": {
+        "bold.co": "https://bold.co/"
+      }
+    },
+    {
+      "nombre": "ACH Colombia",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "achcolombia"
+      ],
+      "dominios": {
+        "achcolombia.com.co": "https://www.achcolombia.com.co/"
+      }
+    },
+    {
+      "nombre": "Banco de la República / Bre-B",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancodelarepublica"
+      ],
+      "contextuales": [
+        "banrep",
+        "breb"
+      ],
+      "dominios": {
+        "banrep.gov.co": "https://www.banrep.gov.co/"
+      }
+    },
+    {
+      "nombre": "Bancamía",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancamia"
+      ],
+      "dominios": {
+        "bancamia.com.co": "https://www.bancamia.com.co/"
+      }
+    },
+    {
+      "nombre": "Bancóldex",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "bancoldex"
+      ],
+      "dominios": {
+        "bancoldex.com": "https://www.bancoldex.com/"
+      }
+    },
+    {
+      "nombre": "Finagro",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "finagro"
+      ],
+      "dominios": {
+        "finagro.com.co": "https://www.finagro.com.co/"
+      }
+    },
+    {
+      "nombre": "Confiar Cooperativa Financiera",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "cooperativaconfiar"
+      ],
+      "contextuales": [
+        "confiar"
+      ],
+      "dominios": {
+        "confiar.coop": "https://www.confiar.coop/"
+      }
+    },
+    {
+      "nombre": "Efecty",
+      "categoria": "finanzas",
+      "region": "CO",
+      "contextuales": [
+        "efecty"
+      ],
+      "dominios": {
+        "efecty.com.co": "https://www.efecty.com.co/"
+      }
+    },
+    {
+      "nombre": "SuperGIROS",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "supergiros"
+      ],
+      "dominios": {
+        "supergiros.com.co": "https://www.supergiros.com.co/"
+      }
+    },
+    {
+      "nombre": "PayU",
+      "categoria": "finanzas",
+      "region": "CO",
+      "distintivos": [
+        "payulatam"
+      ],
+      "contextuales": [
+        "payu"
+      ],
+      "dominios": {
+        "payu.com": "https://brazil.payu.com/wp-content/uploads/sites/3/2024/11/Latam-Terms-Conditions-clean-version-English.pdf"
+      },
+      "hosts": {
+        "checkout.payulatam.com": "https://developers.payulatam.com/latam/es/docs/getting-started/deploy-to-production.html",
+        "developers.payulatam.com": "https://developers.payulatam.com/latam/es/docs/integrations/webcheckout-integration.html"
+      }
+    },
+    {
+      "nombre": "PayPal",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "paypal"
+      ],
+      "dominios": {
+        "paypal.com": "https://www.paypal.com/co/home"
+      }
+    },
+    {
+      "nombre": "Mercado Pago",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "mercadopago"
+      ],
+      "dominios": {
+        "mercadopago.com.co": "https://www.mercadopago.com.co/c/terminosycondiciones"
+      }
+    },
+    {
+      "nombre": "Visa",
+      "categoria": "finanzas",
+      "region": "Global",
+      "contextuales": [
+        "visa"
+      ],
+      "dominios": {
+        "visa.com.co": "https://www.visa.com.co/",
+        "visa.com": "https://www.visa.com/"
+      }
+    },
+    {
+      "nombre": "Mastercard",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "mastercard"
+      ],
+      "dominios": {
+        "mastercard.com.co": "https://www.mastercard.com.co/",
+        "mastercard.com": "https://www.mastercard.com/"
+      }
+    },
+    {
+      "nombre": "American Express",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "americanexpress"
+      ],
+      "contextuales": [
+        "amex"
+      ],
+      "dominios": {
+        "americanexpress.com": "https://www.americanexpress.com/es-co/network/cuenta/acceso.html"
+      }
+    },
+    {
+      "nombre": "Western Union",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "westernunion"
+      ],
+      "dominios": {
+        "westernunion.com": "https://www.westernunion.com/co/es/home.html"
+      }
+    },
+    {
+      "nombre": "Wise",
+      "categoria": "finanzas",
+      "region": "Global",
+      "contextuales": [
+        "wise",
+        "transferwise"
+      ],
+      "dominios": {
+        "wise.com": "https://wise.com/"
+      }
+    },
+    {
+      "nombre": "Revolut",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "revolut"
+      ],
+      "dominios": {
+        "revolut.com": "https://www.revolut.com/"
+      }
+    },
+    {
+      "nombre": "Stripe",
+      "categoria": "finanzas",
+      "region": "Global",
+      "contextuales": [
+        "stripe"
+      ],
+      "dominios": {
+        "stripe.com": "https://stripe.com/"
+      }
+    },
+    {
+      "nombre": "Payoneer",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "payoneer"
+      ],
+      "dominios": {
+        "payoneer.com": "https://www.payoneer.com/"
+      }
+    },
+    {
+      "nombre": "Venmo",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "venmo"
+      ],
+      "dominios": {
+        "venmo.com": "https://venmo.com/"
+      }
+    },
+    {
+      "nombre": "Cash App",
+      "categoria": "finanzas",
+      "region": "Global",
+      "contextuales": [
+        "cashapp"
+      ],
+      "dominios": {
+        "cash.app": "https://cash.app/"
+      }
+    },
+    {
+      "nombre": "Bank of America",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "bankofamerica"
+      ],
+      "contextuales": [
+        "bofa"
+      ],
+      "dominios": {
+        "bankofamerica.com": "https://www.bankofamerica.com/"
+      }
+    },
+    {
+      "nombre": "Chase",
+      "categoria": "finanzas",
+      "region": "Global",
+      "contextuales": [
+        "chase",
+        "jpmorganchase"
+      ],
+      "dominios": {
+        "chase.com": "https://www.chase.com/"
+      }
+    },
+    {
+      "nombre": "Wells Fargo",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "wellsfargo"
+      ],
+      "dominios": {
+        "wellsfargo.com": "https://www.wellsfargo.com/"
+      }
+    },
+    {
+      "nombre": "Citibank",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "citibank"
+      ],
+      "contextuales": [
+        "citi"
+      ],
+      "dominios": {
+        "citi.com": "https://www.citi.com/"
+      }
+    },
+    {
+      "nombre": "Capital One",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "capitalone"
+      ],
+      "dominios": {
+        "capitalone.com": "https://www.capitalone.com/"
+      }
+    },
+    {
+      "nombre": "HSBC",
+      "categoria": "finanzas",
+      "region": "Global",
+      "contextuales": [
+        "hsbc"
+      ],
+      "dominios": {
+        "hsbc.com": "https://www.hsbc.com/"
+      }
+    },
+    {
+      "nombre": "Binance",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "binance"
+      ],
+      "dominios": {
+        "binance.com": "https://www.binance.com/"
+      }
+    },
+    {
+      "nombre": "Coinbase",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "coinbase"
+      ],
+      "dominios": {
+        "coinbase.com": "https://www.coinbase.com/"
+      }
+    },
+    {
+      "nombre": "MetaMask",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "metamask"
+      ],
+      "dominios": {
+        "metamask.io": "https://metamask.io/",
+        "metamask.com": "https://metamask.io/"
+      }
+    },
+    {
+      "nombre": "Scotiabank",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "scotiabank"
+      ],
+      "dominios": {
+        "scotiabank.com": "https://www.scotiabank.com/global/en/global-site.html"
+      }
+    },
+    {
+      "nombre": "Trust Wallet",
+      "categoria": "finanzas",
+      "region": "Global",
+      "distintivos": [
+        "trustwallet"
+      ],
+      "dominios": {
+        "trustwallet.com": "https://trustwallet.com/"
+      }
+    },
+    {
+      "nombre": "DIAN",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "dian",
+        "muisca"
+      ],
+      "dominios": {
+        "dian.gov.co": "https://www.dian.gov.co/"
+      },
+      "autenticacion": {
+        "muisca.dian.gov.co": "https://www.dian.gov.co/tramitesservicios/Paginas/RUT-sin-correo-electronico.aspx"
+      }
+    },
+    {
+      "nombre": "RUNT",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "runt"
+      ],
+      "hosts": {
+        "www.runt.gov.co": "https://www.runt.gov.co/sites/default/files/Comunicado%20a%20la%20opini%C3%B3n%20p%C3%BAblica%20-%2028%20de%20noviembre%20de%202025.pdf",
+        "runt.gov.co": "https://www.runt.gov.co/"
+      }
+    },
+    {
+      "nombre": "SIMIT",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "simit"
+      ],
+      "hosts": {
+        "www.fcm.org.co": "https://www.fcm.org.co/canales-oficiales-simit/"
+      }
+    },
+    {
+      "nombre": "Registraduría Nacional",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "registraduria",
+        "registradurianacional"
+      ],
+      "dominios": {
+        "registraduria.gov.co": "https://www.registraduria.gov.co/"
+      }
+    },
+    {
+      "nombre": "Policía Nacional de Colombia",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "policianacional"
+      ],
+      "dominios": {
+        "policia.gov.co": "https://www.policia.gov.co/"
+      }
+    },
+    {
+      "nombre": "Migración Colombia",
+      "categoria": "tramites",
+      "region": "CO",
+      "distintivos": [
+        "migracioncolombia"
+      ],
+      "dominios": {
+        "migracioncolombia.gov.co": "https://www.migracioncolombia.gov.co/"
+      }
+    },
+    {
+      "nombre": "Cancillería de Colombia",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "cancilleria"
+      ],
+      "dominios": {
+        "cancilleria.gov.co": "https://www.cancilleria.gov.co/sala-de-prensa/noticias/cancilleria-alerta-sobre-pagina-fraudulenta-que-suplanta-su-sitio-oficial-para-estafar-ciudadanos"
+      }
+    },
+    {
+      "nombre": "Portal GOV.CO",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "govco",
+        "portalcolombia",
+        "carpetaciudadana"
+      ],
+      "hosts": {
+        "gov.co": "https://www.gov.co/",
+        "www.gov.co": "https://www.gov.co/"
+      },
+      "autenticacion": {
+        "autenticaciondigital.and.gov.co": "https://mintic.gov.co/micrositios/rendicion-cuentas/2021/787/w3-propertyvalue-377132.html"
+      }
+    },
+    {
+      "nombre": "Agencia Nacional Digital",
+      "categoria": "tramites",
+      "region": "CO",
+      "distintivos": [
+        "agencianacionaldigital"
+      ],
+      "contextuales": [
+        "autenticaciondigital"
+      ],
+      "dominios": {
+        "and.gov.co": "https://www.and.gov.co/"
+      }
+    },
+    {
+      "nombre": "Sisbén",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "sisben"
+      ],
+      "dominios": {
+        "sisben.gov.co": "https://www.sisben.gov.co/Paginas/Portal%20Ciudadano.html"
+      }
+    },
+    {
+      "nombre": "Prosperidad Social",
+      "categoria": "tramites",
+      "region": "CO",
+      "distintivos": [
+        "prosperidadsocial"
+      ],
+      "dominios": {
+        "prosperidadsocial.gov.co": "https://prosperidadsocial.gov.co/"
+      }
+    },
+    {
+      "nombre": "SENA",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "sena"
+      ],
+      "dominios": {
+        "sena.edu.co": "https://www.sena.edu.co/"
+      }
+    },
+    {
+      "nombre": "ICFES",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "icfes"
+      ],
+      "dominios": {
+        "icfes.gov.co": "https://www.icfes.gov.co/"
+      }
+    },
+    {
+      "nombre": "ICETEX",
+      "categoria": "tramites",
+      "region": "CO",
+      "distintivos": [
+        "icetex"
+      ],
+      "dominios": {
+        "icetex.gov.co": "https://web.icetex.gov.co/"
+      },
+      "autenticacion": {
+        "aplicaciones.icetex.gov.co": "https://cc-csirt.policia.gov.co/alertas-tips.aspx"
+      }
+    },
+    {
+      "nombre": "Colpensiones",
+      "categoria": "tramites",
+      "region": "CO",
+      "distintivos": [
+        "colpensiones"
+      ],
+      "dominios": {
+        "colpensiones.gov.co": "https://sede.colpensiones.gov.co/tramites/"
+      },
+      "autenticacion": {
+        "sede.colpensiones.gov.co": "https://sede.colpensiones.gov.co/login"
+      }
+    },
+    {
+      "nombre": "UGPP",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "ugpp"
+      ],
+      "dominios": {
+        "ugpp.gov.co": "https://www.ugpp.gov.co/noticia-tramites-sencillos/"
+      }
+    },
+    {
+      "nombre": "ADRES",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "adres"
+      ],
+      "dominios": {
+        "adres.gov.co": "https://www.adres.gov.co/"
+      }
+    },
+    {
+      "nombre": "ICBF",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "icbf"
+      ],
+      "dominios": {
+        "icbf.gov.co": "https://www.icbf.gov.co/"
+      }
+    },
+    {
+      "nombre": "Superintendencia Financiera",
+      "categoria": "tramites",
+      "region": "CO",
+      "distintivos": [
+        "superfinanciera"
+      ],
+      "contextuales": [
+        "sfc"
+      ],
+      "dominios": {
+        "superfinanciera.gov.co": "https://www.superfinanciera.gov.co/"
+      }
+    },
+    {
+      "nombre": "Superintendencia de Industria y Comercio",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "sic",
+        "superintendenciadeindustriaycomercio"
+      ],
+      "dominios": {
+        "sic.gov.co": "https://sedeelectronica.sic.gov.co/"
+      },
+      "autenticacion": {
+        "servicioslinea.sic.gov.co": "https://servicioslinea.sic.gov.co/servilinea/registrousua/verificar/c2VydmlsaW5lYQ%3D%3D"
+      }
+    },
+    {
+      "nombre": "Fiscalía General de la Nación",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "fiscalia",
+        "fiscaliageneraldelanacion"
+      ],
+      "dominios": {
+        "fiscalia.gov.co": "https://www.fiscalia.gov.co/colombia/transparencia-y-acceso-a-informacion-publica/mecanismos-para-la-atencion-al-ciudadano/"
+      }
+    },
+    {
+      "nombre": "Rama Judicial",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "ramajudicial"
+      ],
+      "dominios": {
+        "ramajudicial.gov.co": "https://www.ramajudicial.gov.co/"
+      }
+    },
+    {
+      "nombre": "Procuraduría General",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "procuraduria",
+        "procuraduriageneral"
+      ],
+      "dominios": {
+        "procuraduria.gov.co": "https://www.procuraduria.gov.co/"
+      }
+    },
+    {
+      "nombre": "Contraloría General",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "contraloria",
+        "contraloriageneral"
+      ],
+      "dominios": {
+        "contraloria.gov.co": "https://www.contraloria.gov.co/web/guest/portafolio-de-tramites-y-servicios"
+      }
+    },
+    {
+      "nombre": "Bogotá",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "bogota",
+        "alcaldiabogota"
+      ],
+      "dominios": {
+        "bogota.gov.co": "https://bogota.gov.co/"
+      }
+    },
+    {
+      "nombre": "Secretaría Distrital de Movilidad de Bogotá",
+      "categoria": "tramites",
+      "region": "CO",
+      "distintivos": [
+        "movilidadbogota"
+      ],
+      "contextuales": [
+        "secretariademovilidad",
+        "sdm"
+      ],
+      "dominios": {
+        "movilidadbogota.gov.co": "https://www.movilidadbogota.gov.co/consulta-de-comparendos"
+      }
+    },
+    {
+      "nombre": "Secretaría Distrital de Hacienda de Bogotá",
+      "categoria": "tramites",
+      "region": "CO",
+      "distintivos": [
+        "haciendabogota"
+      ],
+      "contextuales": [
+        "secretariadehacienda",
+        "shd"
+      ],
+      "dominios": {
+        "haciendabogota.gov.co": "https://www.haciendabogota.gov.co/es/sdh/canal-virtual"
+      }
+    },
+    {
+      "nombre": "Ventanilla Única de Servicios de Bogotá",
+      "categoria": "tramites",
+      "region": "CO",
+      "distintivos": [
+        "ventanillamovilidad"
+      ],
+      "contextuales": [
+        "ventanillaunica",
+        "vus"
+      ],
+      "hosts": {
+        "ventanillamovilidad.com.co": "https://www.movilidadbogota.gov.co/noticias/vendio-su-vehiculo-no-olvide-hacer-el-traspaso-y-evite-problemas",
+        "www.ventanillamovilidad.com.co": "https://www.movilidadbogota.gov.co/noticias/vendio-su-vehiculo-no-olvide-hacer-el-traspaso-y-evite-problemas"
+      }
+    },
+    {
+      "nombre": "Alcaldía de Medellín",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "medellin",
+        "alcaldiademedellin"
+      ],
+      "dominios": {
+        "medellin.gov.co": "https://www.medellin.gov.co/"
+      }
+    },
+    {
+      "nombre": "Alcaldía de Cali",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "cali",
+        "alcaldiadecali"
+      ],
+      "dominios": {
+        "cali.gov.co": "https://www.cali.gov.co/gobierno/publicaciones/160558/avisos-notificaciones-y-citaciones/"
+      }
+    },
+    {
+      "nombre": "RUES",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "rues"
+      ],
+      "dominios": {
+        "rues.org.co": "https://www.rues.org.co/"
+      }
+    },
+    {
+      "nombre": "Cámara de Comercio de Bogotá",
+      "categoria": "tramites",
+      "region": "CO",
+      "distintivos": [
+        "camaradecomerciodebogota"
+      ],
+      "contextuales": [
+        "ccb"
+      ],
+      "dominios": {
+        "ccb.org.co": "https://www.ccb.org.co/"
+      }
+    },
+    {
+      "nombre": "Ministerio de Salud",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "minsalud",
+        "ministeriodesalud"
+      ],
+      "dominios": {
+        "minsalud.gov.co": "https://www.minsalud.gov.co/Comunicaciones/noticias/2026/Paginas/minsalud-renueva-su-portal-web.aspx"
+      }
+    },
+    {
+      "nombre": "Ministerio TIC",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "mintic"
+      ],
+      "dominios": {
+        "mintic.gov.co": "https://www.mintic.gov.co/"
+      }
+    },
+    {
+      "nombre": "Ministerio de Transporte",
+      "categoria": "tramites",
+      "region": "CO",
+      "contextuales": [
+        "mintransporte",
+        "ministeriodetransporte"
+      ],
+      "dominios": {
+        "mintransporte.gov.co": "https://www.mintransporte.gov.co/"
+      }
+    },
+    {
+      "nombre": "IRS",
+      "categoria": "tramites",
+      "region": "US",
+      "contextuales": [
+        "irs"
+      ],
+      "dominios": {
+        "irs.gov": "https://www.irs.gov/"
+      }
+    },
+    {
+      "nombre": "USCIS",
+      "categoria": "tramites",
+      "region": "US",
+      "contextuales": [
+        "uscis"
+      ],
+      "dominios": {
+        "uscis.gov": "https://my.uscis.gov/"
+      },
+      "autenticacion": {
+        "my.uscis.gov": "https://my.uscis.gov/"
+      }
+    },
+    {
+      "nombre": "Social Security Administration",
+      "categoria": "tramites",
+      "region": "US",
+      "distintivos": [
+        "socialsecurityadministration"
+      ],
+      "contextuales": [
+        "socialsecurity",
+        "ssa"
+      ],
+      "dominios": {
+        "ssa.gov": "https://www.ssa.gov/"
+      }
+    },
+    {
+      "nombre": "Login.gov",
+      "categoria": "tramites",
+      "region": "US",
+      "contextuales": [
+        "logingov"
+      ],
+      "dominios": {
+        "login.gov": "https://www.login.gov/"
+      },
+      "autenticacion": {
+        "secure.login.gov": "https://www.login.gov/"
+      }
+    },
+    {
+      "nombre": "SAT México",
+      "categoria": "tramites",
+      "region": "MX",
+      "contextuales": [
+        "sat",
+        "satmexico"
+      ],
+      "dominios": {
+        "sat.gob.mx": "https://www.sat.gob.mx/portal/public/personas-fisicas"
+      }
+    },
+    {
+      "nombre": "Agencia Tributaria de España",
+      "categoria": "tramites",
+      "region": "ES",
+      "contextuales": [
+        "agenciatributaria",
+        "aeat"
+      ],
+      "dominios": {
+        "agenciatributaria.gob.es": "https://sede.agenciatributaria.gob.es/"
+      }
+    },
+    {
+      "nombre": "Cl@ve",
+      "categoria": "tramites",
+      "region": "ES",
+      "distintivos": ["pasarelaclave"],
+      "dominios": {
+        "clave.gob.es": "https://clave.gob.es/"
+      },
+      "autenticacion": {
+        "pasarela.clave.gob.es": "https://pasarela.clave.gob.es/Proxy2/resources/files/Declaracion_de_Accesibilidad.pdf"
+      }
+    },
+    {
+      "nombre": "Servientrega",
+      "categoria": "envios",
+      "region": "CO",
+      "distintivos": [
+        "servientrega"
+      ],
+      "dominios": {
+        "servientrega.com": "https://www.servientrega.com/"
+      }
+    },
+    {
+      "nombre": "Inter Rapidísimo",
+      "categoria": "envios",
+      "region": "CO",
+      "distintivos": [
+        "interrapidisimo"
+      ],
+      "contextuales": [
+        "rapidisimo"
+      ],
+      "dominios": {
+        "interrapidisimo.com": "https://interrapidisimo.com/fraude-electronico/"
+      }
+    },
+    {
+      "nombre": "Coordinadora",
+      "categoria": "envios",
+      "region": "CO",
+      "contextuales": [
+        "coordinadora"
+      ],
+      "dominios": {
+        "coordinadora.com": "https://coordinadora.com/"
+      }
+    },
+    {
+      "nombre": "Envía",
+      "categoria": "envios",
+      "region": "CO",
+      "contextuales": [
+        "envia",
+        "colvanes"
+      ],
+      "dominios": {
+        "envia.co": "https://envia.co/"
+      }
+    },
+    {
+      "nombre": "4-72",
+      "categoria": "envios",
+      "region": "CO",
+      "contextuales": [
+        "472",
+        "serviciospostalesnacionales"
+      ],
+      "dominios": {
+        "4-72.com.co": "https://www.4-72.com.co/publicaciones/1536/haga-caso-omiso-4-72-no-envia-mensajes-de-texto/"
+      }
+    },
+    {
+      "nombre": "TCC",
+      "categoria": "envios",
+      "region": "CO",
+      "contextuales": [
+        "tcc"
+      ],
+      "dominios": {
+        "tcc.com.co": "https://tcc.com.co/"
+      }
+    },
+    {
+      "nombre": "Deprisa",
+      "categoria": "envios",
+      "region": "CO",
+      "contextuales": [
+        "deprisa"
+      ],
+      "dominios": {
+        "deprisa.com": "https://www.deprisa.com/es/contacto/crear-caso-pqr"
+      }
+    },
+    {
+      "nombre": "Mensajeros Urbanos",
+      "categoria": "envios",
+      "region": "CO",
+      "distintivos": [
+        "mensajerosurbanos"
+      ],
+      "dominios": {
+        "mensajerosurbanos.com": "https://mensajerosurbanos.com/"
+      }
+    },
+    {
+      "nombre": "DHL",
+      "categoria": "envios",
+      "region": "Global",
+      "contextuales": [
+        "dhl"
+      ],
+      "dominios": {
+        "dhl.com": "https://www.dhl.com/co-es/home.html",
+        "dhl.de": "https://www.dhl.de/"
+      }
+    },
+    {
+      "nombre": "FedEx",
+      "categoria": "envios",
+      "region": "Global",
+      "distintivos": [
+        "fedex"
+      ],
+      "dominios": {
+        "fedex.com": "https://www.fedex.com/es-co/home.html"
+      }
+    },
+    {
+      "nombre": "UPS",
+      "categoria": "envios",
+      "region": "Global",
+      "contextuales": [
+        "ups"
+      ],
+      "dominios": {
+        "ups.com": "https://www.ups.com/co/es/home"
+      }
+    },
+    {
+      "nombre": "USPS",
+      "categoria": "envios",
+      "region": "Global",
+      "contextuales": [
+        "usps"
+      ],
+      "dominios": {
+        "usps.com": "https://www.usps.com/"
+      }
+    },
+    {
+      "nombre": "Correos de España",
+      "categoria": "envios",
+      "region": "Global",
+      "contextuales": [
+        "correos",
+        "correosespana"
+      ],
+      "dominios": {
+        "correos.es": "https://www.correos.es/"
+      }
+    },
+    {
+      "nombre": "Royal Mail",
+      "categoria": "envios",
+      "region": "Global",
+      "distintivos": [
+        "royalmail"
+      ],
+      "dominios": {
+        "royalmail.com": "https://www.royalmail.com/"
+      }
+    },
+    {
+      "nombre": "Canada Post",
+      "categoria": "envios",
+      "region": "Global",
+      "distintivos": [
+        "canadapost",
+        "postescanada"
+      ],
+      "dominios": {
+        "canadapost-postescanada.ca": "https://www.canadapost-postescanada.ca/"
+      }
+    },
+    {
+      "nombre": "Estafeta",
+      "categoria": "envios",
+      "region": "Global",
+      "contextuales": [
+        "estafeta"
+      ],
+      "dominios": {
+        "estafeta.com": "https://www.estafeta.com/"
+      }
+    },
+    {
+      "nombre": "Claro",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "contextuales": [
+        "claro",
+        "miclaro"
+      ],
+      "dominios": {
+        "claro.com.co": "https://www.claro.com.co/",
+        "claro.com.br": "https://www.claro.com.br/"
+      }
+    },
+    {
+      "nombre": "Movistar",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "distintivos": [
+        "movistar"
+      ],
+      "contextuales": [
+        "mimovistar"
+      ],
+      "dominios": {
+        "movistar.co": "https://www.movistar.co/",
+        "movistar.com.co": "https://www.movistar.co/",
+        "movistar.es": "https://www.movistar.es/atencion-cliente/aviso-legal"
+      }
+    },
+    {
+      "nombre": "Tigo Colombia",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "contextuales": [
+        "tigo",
+        "mitigo"
+      ],
+      "dominios": {
+        "tigo.com.co": "https://www.tigo.com.co/"
+      }
+    },
+    {
+      "nombre": "WOM Colombia",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "contextuales": [
+        "wom",
+        "miwom"
+      ],
+      "dominios": {
+        "wom.co": "https://www.wom.co/media/wysiwyg/TyC/Historicos/2025/TyC_consolidados_Pospago_Ene-25_.pdf"
+      }
+    },
+    {
+      "nombre": "ETB",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "contextuales": [
+        "etb",
+        "mietb"
+      ],
+      "dominios": {
+        "etb.com": "https://etb.com/"
+      },
+      "autenticacion": {
+        "mietb.etb.com": "https://etb.com/app/"
+      }
+    },
+    {
+      "nombre": "DIRECTV Colombia",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "distintivos": [
+        "directv"
+      ],
+      "contextuales": [
+        "midirectv"
+      ],
+      "dominios": {
+        "directv.com.co": "https://www.directv.com.co/"
+      },
+      "hosts": {
+        "www.directvla.com": "https://www.directv.com.co/"
+      }
+    },
+    {
+      "nombre": "EMCALI",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "contextuales": [
+        "emcali"
+      ],
+      "dominios": {
+        "emcali.com.co": "https://www.emcali.com.co/"
+      }
+    },
+    {
+      "nombre": "Virgin Mobile Colombia",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "distintivos": [
+        "virginmobile"
+      ],
+      "contextuales": [
+        "mivirgin"
+      ],
+      "dominios": {
+        "virginmobile.co": "https://www.virginmobile.co/"
+      }
+    },
+    {
+      "nombre": "Móvil Éxito",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "distintivos": [
+        "movilexito"
+      ],
+      "dominios": {
+        "movilexito.com": "https://www.movilexito.com/"
+      }
+    },
+    {
+      "nombre": "Hughesnet Colombia",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "distintivos": [
+        "hughesnet"
+      ],
+      "dominios": {
+        "hughesnet.com.co": "https://www.hughesnet.com.co/"
+      }
+    },
+    {
+      "nombre": "Starlink",
+      "categoria": "telecomunicaciones",
+      "region": "CO",
+      "distintivos": [
+        "starlink"
+      ],
+      "dominios": {
+        "starlink.com": "https://www.starlink.com/co"
+      }
+    },
+    {
+      "nombre": "AT&T",
+      "categoria": "telecomunicaciones",
+      "region": "Global",
+      "contextuales": [
+        "att",
+        "myatt"
+      ],
+      "dominios": {
+        "att.com": "https://www.att.com/"
+      }
+    },
+    {
+      "nombre": "Verizon",
+      "categoria": "telecomunicaciones",
+      "region": "Global",
+      "distintivos": [
+        "verizon"
+      ],
+      "dominios": {
+        "verizon.com": "https://www.verizon.com/"
+      }
+    },
+    {
+      "nombre": "T-Mobile",
+      "categoria": "telecomunicaciones",
+      "region": "Global",
+      "distintivos": [
+        "tmobile"
+      ],
+      "dominios": {
+        "t-mobile.com": "https://www.t-mobile.com/"
+      }
+    },
+    {
+      "nombre": "Vodafone",
+      "categoria": "telecomunicaciones",
+      "region": "Global",
+      "distintivos": [
+        "vodafone"
+      ],
+      "dominios": {
+        "vodafone.es": "https://www.vodafone.es/",
+        "vodafone.com": "https://www.vodafone.com/"
+      }
+    },
+    {
+      "nombre": "Orange España",
+      "categoria": "telecomunicaciones",
+      "region": "Global",
+      "contextuales": [
+        "orange",
+        "miorange"
+      ],
+      "dominios": {
+        "orange.es": "https://www.orange.es/"
+      }
+    },
+    {
+      "nombre": "Xfinity",
+      "categoria": "telecomunicaciones",
+      "region": "Global",
+      "distintivos": [
+        "xfinity"
+      ],
+      "dominios": {
+        "xfinity.com": "https://www.xfinity.com/"
+      },
+      "autenticacion": {
+        "login.xfinity.com": "https://login.xfinity.com/"
+      }
+    },
+    {
+      "nombre": "Telcel",
+      "categoria": "telecomunicaciones",
+      "region": "Global",
+      "distintivos": [
+        "telcel"
+      ],
+      "contextuales": [
+        "mitelcel"
+      ],
+      "dominios": {
+        "telcel.com": "https://www.telcel.com/personas/"
+      }
+    },
+    {
+      "nombre": "Telmex",
+      "categoria": "telecomunicaciones",
+      "region": "Global",
+      "distintivos": [
+        "telmex"
+      ],
+      "contextuales": [
+        "mitelmex"
+      ],
+      "dominios": {
+        "telmex.com": "https://telmex.com/"
+      }
+    },
+    {
+      "nombre": "Microsoft",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "microsoft",
+        "microsoft365",
+        "office365",
+        "hotmail"
+      ],
+      "contextuales": [
+        "outlook",
+        "office"
+      ],
+      "dominios": {
+        "microsoft.com": "https://www.microsoft.com/"
+      },
+      "autenticacion": {
+        "login.microsoftonline.com": "https://learn.microsoft.com/en-us/entra/identity-platform/msal-client-application-configuration",
+        "account.microsoft.com": "https://support.microsoft.com/en-us//accounts-billing/manage/how-to-change-a-birth-date-on-a-microsoft-account",
+        "login.live.com": "https://login.live.com/",
+        "outlook.live.com": "https://support.microsoft.com/en-us/accounts-billing/manage/how-to-sign-in-to-hotmail"
+      },
+      "hosts": {
+        "m365.cloud.microsoft": "https://support.microsoft.com/en-us/office/lifecycle/officeinstall/download-install-or-reinstall-microsoft-365-or-office-2024-on-a-pc-or-mac",
+        "www.office.com": "https://support.microsoft.com/en-us/microsoft-365-activation-licensing/get-help-with-product-key-errors-on-office-com-setup",
+        "office.com": "https://support.microsoft.com/en-us/microsoft-365-activation-licensing/get-help-with-product-key-errors-on-office-com-setup",
+        "www.outlook.com": "https://support.microsoft.com/en-us/accounts-billing/manage/how-to-sign-in-to-hotmail"
+      }
+    },
+    {
+      "nombre": "Google",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "google",
+        "gmail"
+      ],
+      "dominios": {
+        "google.com": "https://www.google.com/"
+      },
+      "autenticacion": {
+        "accounts.google.com": "https://developers.google.com/identity/openid-connect/reference"
+      }
+    },
+    {
+      "nombre": "Apple",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "appleid"
+      ],
+      "contextuales": [
+        "apple",
+        "icloud"
+      ],
+      "dominios": {
+        "apple.com": "https://www.apple.com/",
+        "icloud.com": "https://support.apple.com/guide/icloud/sign-in-and-use-icloudcom-mm281e3e7d/1.0/icloud/1.0"
+      },
+      "autenticacion": {
+        "appleid.apple.com": "https://appleid.apple.com/",
+        "account.apple.com": "https://support.apple.com/en-us/101567"
+      }
+    },
+    {
+      "nombre": "Meta",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "meta"
+      ],
+      "dominios": {
+        "meta.com": "https://www.meta.com/"
+      }
+    },
+    {
+      "nombre": "Facebook",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "facebook"
+      ],
+      "dominios": {
+        "facebook.com": "https://www.facebook.com/"
+      }
+    },
+    {
+      "nombre": "Instagram",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "instagram"
+      ],
+      "dominios": {
+        "instagram.com": "https://privacycenter.instagram.com/policies/dpf/version/7047067902038207/"
+      }
+    },
+    {
+      "nombre": "WhatsApp",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "whatsapp"
+      ],
+      "dominios": {
+        "whatsapp.com": "https://www.whatsapp.com/"
+      },
+      "hosts": {
+        "wa.me": "https://faq.whatsapp.com/5913398998672934"
+      }
+    },
+    {
+      "nombre": "Messenger",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "messenger"
+      ],
+      "dominios": {
+        "messenger.com": "https://www.messenger.com/"
+      }
+    },
+    {
+      "nombre": "LinkedIn",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "linkedin"
+      ],
+      "dominios": {
+        "linkedin.com": "https://www.linkedin.com/"
+      }
+    },
+    {
+      "nombre": "TikTok",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "tiktok"
+      ],
+      "dominios": {
+        "tiktok.com": "https://www.tiktok.com/"
+      }
+    },
+    {
+      "nombre": "X (Twitter)",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "twitter"
+      ],
+      "dominios": {
+        "x.com": "https://help.x.com/en/safety-and-security/account-security-tips"
+      }
+    },
+    {
+      "nombre": "Telegram",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "telegram"
+      ],
+      "dominios": {
+        "telegram.org": "https://telegram.org/"
+      }
+    },
+    {
+      "nombre": "Snapchat",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "snapchat"
+      ],
+      "dominios": {
+        "snapchat.com": "https://www.snapchat.com/"
+      }
+    },
+    {
+      "nombre": "Amazon",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "amazonprime"
+      ],
+      "contextuales": [
+        "amazon"
+      ],
+      "dominios": {
+        "amazon.com": "https://www.aboutamazon.com/news/retail/how-to-avoid-amazon-scams"
+      }
+    },
+    {
+      "nombre": "Agaval",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "CO",
+      "distintivos": ["agaval"],
+      "dominios": {
+        "agaval.com": "https://www.agaval.com/terminos-y-condiciones"
+      }
+    },
+    {
+      "nombre": "Falabella",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "CO",
+      "distintivos": ["falabella"],
+      "dominios": {
+        "falabella.com.co": "https://www.falabella.com.co/falabella-co/page/terminos-y-condiciones"
+      }
+    },
+    {
+      "nombre": "Mercado Libre",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "mercadolibre"
+      ],
+      "dominios": {
+        "mercadolibre.com.co": "https://www.mercadolibre.com.co/l/mediosdepago"
+      }
+    },
+    {
+      "nombre": "AliExpress",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "aliexpress"
+      ],
+      "dominios": {
+        "aliexpress.com": "https://home.alibabagroup.com/en-US/about-alibaba-businesses-1747705938191581184"
+      }
+    },
+    {
+      "nombre": "Temu",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "temu"
+      ],
+      "dominios": {
+        "temu.com": "https://www.temu.com/"
+      }
+    },
+    {
+      "nombre": "Shopee",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "shopee"
+      ],
+      "dominios": {
+        "shopee.com": "https://shopee.com/"
+      }
+    },
+    {
+      "nombre": "Roblox",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "roblox"
+      ],
+      "dominios": {
+        "roblox.com": "https://www.roblox.com/"
+      }
+    },
+    {
+      "nombre": "Netflix",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "netflix"
+      ],
+      "dominios": {
+        "netflix.com": "https://www.netflix.com/"
+      }
+    },
+    {
+      "nombre": "Spotify",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "spotify"
+      ],
+      "dominios": {
+        "spotify.com": "https://www.spotify.com/"
+      }
+    },
+    {
+      "nombre": "Disney+",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "disneyplus"
+      ],
+      "contextuales": [
+        "disney"
+      ],
+      "dominios": {
+        "disneyplus.com": "https://www.disneyplus.com/"
+      }
+    },
+    {
+      "nombre": "Booking.com",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "booking"
+      ],
+      "dominios": {
+        "booking.com": "https://m.booking.com/trust-and-safety/partners.en-us.html"
+      }
+    },
+    {
+      "nombre": "Airbnb",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "airbnb"
+      ],
+      "dominios": {
+        "airbnb.com": "https://www.airbnb.com/"
+      }
+    },
+    {
+      "nombre": "Adobe",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "adobesign"
+      ],
+      "contextuales": [
+        "adobe",
+        "acrobat"
+      ],
+      "dominios": {
+        "adobe.com": "https://www.adobe.com/"
+      }
+    },
+    {
+      "nombre": "DocuSign",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "docusign"
+      ],
+      "dominios": {
+        "docusign.com": "https://www.docusign.com/"
+      }
+    },
+    {
+      "nombre": "Dropbox",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "dropbox"
+      ],
+      "dominios": {
+        "dropbox.com": "https://www.dropbox.com/"
+      }
+    },
+    {
+      "nombre": "GitHub",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "github"
+      ],
+      "dominios": {
+        "github.com": "https://github.com/"
+      }
+    },
+    {
+      "nombre": "GitLab",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "gitlab"
+      ],
+      "dominios": {
+        "gitlab.com": "https://about.gitlab.com/"
+      }
+    },
+    {
+      "nombre": "Discord",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "discord"
+      ],
+      "dominios": {
+        "discord.com": "https://discord.com/"
+      }
+    },
+    {
+      "nombre": "Slack",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "slack"
+      ],
+      "hosts": {
+        "slack.com": "https://slack.com/",
+        "www.slack.com": "https://slack.com/"
+      }
+    },
+    {
+      "nombre": "Zoom",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "zoom"
+      ],
+      "dominios": {
+        "zoom.com": "https://www.zoom.com/",
+        "zoom.us": "https://zoom.us/"
+      }
+    },
+    {
+      "nombre": "Steam",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "steam",
+        "steampowered"
+      ],
+      "dominios": {
+        "steampowered.com": "https://store.steampowered.com/"
+      }
+    },
+    {
+      "nombre": "Epic Games",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "epicgames"
+      ],
+      "contextuales": [
+        "epic"
+      ],
+      "dominios": {
+        "epicgames.com": "https://www.epicgames.com/"
+      }
+    },
+    {
+      "nombre": "PlayStation",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "playstation"
+      ],
+      "contextuales": [
+        "psn"
+      ],
+      "dominios": {
+        "playstation.com": "https://www.playstation.com/"
+      }
+    },
+    {
+      "nombre": "Nintendo",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "nintendo"
+      ],
+      "dominios": {
+        "nintendo.com": "https://www.nintendo.com/"
+      }
+    },
+    {
+      "nombre": "Proton",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "protonmail"
+      ],
+      "contextuales": [
+        "proton"
+      ],
+      "dominios": {
+        "proton.me": "https://proton.me/"
+      }
+    },
+    {
+      "nombre": "Okta",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "okta"
+      ],
+      "hosts": {
+        "okta.com": "https://www.okta.com/",
+        "www.okta.com": "https://www.okta.com/",
+        "developer.okta.com": "https://developer.okta.com/docs/guides/find-your-domain/"
+      }
+    },
+    {
+      "nombre": "Auth0",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "auth0"
+      ],
+      "hosts": {
+        "auth0.com": "https://auth0.com/",
+        "support.auth0.com": "https://support.auth0.com/center/s/article/Change-the-Tenant-Domain-Name"
+      }
+    },
+    {
+      "nombre": "OneLogin",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "onelogin"
+      ],
+      "hosts": {
+        "onelogin.com": "https://www.onelogin.com/product/pricing/",
+        "www.onelogin.com": "https://www.onelogin.com/product/pricing/",
+        "developers.onelogin.com": "https://developers.onelogin.com/docs/authentication/sessions/establish-onelogin-session-using-api-form-post/"
+      }
+    },
+    {
+      "nombre": "Cisco Duo",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "duosecurity"
+      ],
+      "contextuales": [
+        "duo",
+        "ciscoduo"
+      ],
+      "dominios": {
+        "duo.com": "https://duo.com/"
+      },
+      "autenticacion": {
+        "admin.duosecurity.com": "https://duo.com/"
+      }
+    },
+    {
+      "nombre": "Salesforce",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "salesforce"
+      ],
+      "hosts": {
+        "salesforce.com": "https://www.salesforce.com/",
+        "www.salesforce.com": "https://www.salesforce.com/"
+      },
+      "autenticacion": {
+        "login.salesforce.com": "https://help.salesforce.com/s/articleView",
+        "test.salesforce.com": "https://help.salesforce.com/s/articleView"
+      }
+    },
+    {
+      "nombre": "Ping Identity",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "pingidentity",
+        "pingone"
+      ],
+      "dominios": {
+        "pingidentity.com": "https://www.pingidentity.com/"
+      },
+      "autenticacion": {
+        "auth.pingone.com": "https://docs.pingidentity.com/pingoneaic/am-reference/services-configuration.html",
+        "auth.pingone.ca": "https://docs.pingidentity.com/pingoneaic/am-reference/services-configuration.html",
+        "auth.pingone.eu": "https://docs.pingidentity.com/pingoneaic/am-reference/services-configuration.html"
+      }
+    },
+    {
+      "nombre": "Amazon Web Services",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "amazonwebservices",
+        "amazoncognito"
+      ],
+      "contextuales": [
+        "aws"
+      ],
+      "hosts": {
+        "aws.amazon.com": "https://aws.amazon.com/"
+      },
+      "autenticacion": {
+        "signin.aws.amazon.com": "https://docs.aws.amazon.com/signin/latest/userguide/sign-in-urls-defined.html"
+      }
+    },
+    {
+      "nombre": "Cloudflare",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "cloudflare"
+      ],
+      "dominios": {
+        "cloudflare.com": "https://www.cloudflare.com/"
+      }
+    },
+    {
+      "nombre": "Atlassian",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "atlassian"
+      ],
+      "contextuales": [
+        "jira",
+        "confluence"
+      ],
+      "dominios": {
+        "atlassian.com": "https://support.atlassian.com/atlassian-account/docs/what-is-an-atlassian-account/"
+      },
+      "autenticacion": {
+        "id.atlassian.com": "https://support.atlassian.com/atlassian-account/docs/log-in-to-your-atlassian-account/"
+      }
+    },
+    {
+      "nombre": "Yubico",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "yubico",
+        "yubikey"
+      ],
+      "dominios": {
+        "yubico.com": "https://www.yubico.com/"
+      }
+    },
+    {
+      "nombre": "YouTube",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "youtube"
+      ],
+      "dominios": {
+        "youtube.com": "https://www.youtube.com/"
+      }
+    },
+    {
+      "nombre": "Tesla",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "contextuales": [
+        "tesla"
+      ],
+      "dominios": {
+        "tesla.com": "https://www.tesla.com/"
+      }
+    },
+    {
+      "nombre": "OpenAI",
+      "categoria": "cuentas_y_autenticacion",
+      "region": "Global",
+      "distintivos": [
+        "openai",
+        "chatgpt"
+      ],
+      "dominios": {
+        "openai.com": "https://www.openai.com/",
+        "chatgpt.com": "https://help.openai.com/en/articles/11725090-verifying-communications-from-openai"
+      },
+      "autenticacion": {
+        "auth.openai.com": "https://help.openai.com/en/articles/9247338-network-recommendations-for-chatgpt-errors-on-web-and-apps%25253F.iso"
+      }
+    }
+  ],
+  "plataformas_autenticacion": [
+    {
+      "proveedor": "Okta",
+      "sufijo": "okta.com",
+      "fuente": "https://developer.okta.com/docs/guides/find-your-domain/"
+    },
+    {
+      "proveedor": "Okta",
+      "sufijo": "oktapreview.com",
+      "fuente": "https://developer.okta.com/docs/guides/find-your-domain/"
+    },
+    {
+      "proveedor": "Okta",
+      "sufijo": "okta-emea.com",
+      "fuente": "https://developer.okta.com/docs/guides/find-your-domain/"
+    },
+    {
+      "proveedor": "Auth0",
+      "sufijo": "auth0.com",
+      "fuente": "https://support.auth0.com/center/s/article/Change-the-Tenant-Domain-Name"
+    },
+    {
+      "proveedor": "OneLogin",
+      "sufijo": "onelogin.com",
+      "fuente": "https://developers.onelogin.com/docs/authentication/sessions/establish-onelogin-session-using-api-form-post/"
+    },
+    {
+      "proveedor": "Cisco Duo",
+      "sufijo": "duosecurity.com",
+      "fuente": "https://duo.com/docs/universal-prompt-update-guide"
+    },
+    {
+      "proveedor": "Microsoft Entra",
+      "sufijo": "b2clogin.com",
+      "fuente": "https://learn.microsoft.com/en-us/azure/active-directory-b2c/b2clogin"
+    },
+    {
+      "proveedor": "Microsoft Entra",
+      "sufijo": "ciamlogin.com",
+      "fuente": "https://learn.microsoft.com/en-us/entra/external-id/customers/concept-supported-features-customers?WT.mc_id=EM-MVP-5002871"
+    },
+    {
+      "proveedor": "Salesforce",
+      "sufijo": "my.salesforce.com",
+      "fuente": "https://help.salesforce.com/s/articleView?id=sf.faq_domain_name_what.htm&language=en_US&type=5"
+    },
+    {
+      "proveedor": "AWS IAM Identity Center",
+      "sufijo": "awsapps.com",
+      "fuente": "https://docs.aws.amazon.com/singlesignon/latest/userguide/howtosignin.html"
+    },
+    {
+      "proveedor": "Amazon Cognito",
+      "sufijo": "amazoncognito.com",
+      "fuente": "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-assign-domain-prefix.html"
+    },
+    {
+      "proveedor": "AWS Sign-In",
+      "sufijo": "signin.aws.amazon.com",
+      "fuente": "https://docs.aws.amazon.com/signin/latest/userguide/sign-in-urls-defined.html"
+    },
+    {
+      "proveedor": "Cloudflare Access",
+      "sufijo": "cloudflareaccess.com",
+      "fuente": "https://developers.cloudflare.com/cloudflare-one/faq/getting-started-faq/"
+    }
+  ]
+}

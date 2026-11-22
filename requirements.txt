@@ -1,2 +1,4 @@
-# Dependencia directa instalada en el equipo al preparar la v1.0.
+# Dependencias directas.
 playwright==1.65.2
+idna==3.20
+tldextract==5.4.0
