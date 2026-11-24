@@ -75,7 +75,7 @@ def _interrumpir(canal):
 
 
 @contextmanager
-def solicitar_publico(url, tls, limite, *, aceptar, resolver=resolver_publico):
+def solicitar_publico(url, tls, limite, *, aceptar, resolver=resolver_publico, al_conectar=None):
     partes = urlsplit(url)
     puerto = partes.port or (443 if partes.scheme == 'https' else 80)
     ip = resolver(partes.hostname, puerto, timeout=min(5, plazo_restante(limite)))
@@ -84,6 +84,8 @@ def solicitar_publico(url, tls, limite, *, aceptar, resolver=resolver_publico):
         # La conexión usa la IP validada y TLS verifica el nombre de la URL.
         tcp.settimeout(min(5, plazo_restante(limite)))
         tcp.connect((ip, puerto))
+        if al_conectar is not None:
+            al_conectar(partes.hostname)
         tcp.settimeout(min(5, plazo_restante(limite)))
         canal = tls.wrap_socket(tcp, server_hostname=partes.hostname) if partes.scheme == 'https' else tcp
         with closing(canal), closing(http.client.HTTPConnection(partes.hostname, puerto)) as conexion:

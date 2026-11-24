@@ -4,6 +4,7 @@ from io import BytesIO, StringIO
 import socket
 import ssl
 from threading import Event
+from urllib.parse import urlsplit
 import unittest
 from unittest.mock import MagicMock, Mock, patch
 
@@ -32,10 +33,11 @@ def redireccion(destino):
 @contextmanager
 def simular(*respuestas):
     @contextmanager
-    def solicitar(*_):
+    def solicitar(url, tls, limite, al_conectar):
         resultado = next(secuencia)
         if isinstance(resultado, Exception):
             raise resultado
+        al_conectar(urlsplit(url).hostname)
         with resultado:
             yield resultado
 
@@ -177,6 +179,7 @@ class InspeccionTests(unittest.TestCase):
             'https://sitio.example/ruta-privada?token=prueba', 'https://sitio.example/sesion',
             'https://otro.example/inicio'])
         self.assertEqual(resultado.titulo, 'Página & acceso')
+        self.assertEqual(resultado.dominios_contactados, ('sitio.example', 'otro.example'))
         self.assertEqual(resultado.formularios, (Formulario('https://cuentas.example', True),
                                                   Formulario('https://otro.example', True),
                                                   Formulario(None, False),
@@ -300,11 +303,14 @@ class InspeccionTests(unittest.TestCase):
         self.assertIn(b'GET /ruta HTTP/1.1', conexion_inicial.sendall.call_args.args[0])
         self.assertEqual([paso.estado for paso in resultado.pasos], [302, None])
         self.assertIn('destino que no es público', resultado.limitacion)
+        self.assertEqual(resultado.dominios_contactados, ('sitio.example',))
 
     def test_tls_verifica_el_nombre_original_y_reporta_certificado_rechazado(self):
         conexion = MagicMock()
         conexion.__enter__.return_value = conexion
-        tls = Mock(wrap_socket=Mock(side_effect=ssl.SSLCertVerificationError()))
+        rechazo = ssl.SSLCertVerificationError()
+        rechazo.verify_code = 62
+        tls = Mock(wrap_socket=Mock(side_effect=rechazo))
         with (patch('inspeccion.ssl.create_default_context', return_value=tls),
               patch('inspeccion.resolver_publico', return_value='93.184.215.14'),
               patch('socket.socket', return_value=conexion)):
@@ -314,6 +320,28 @@ class InspeccionTests(unittest.TestCase):
         conexion.connect.assert_called_once_with(('93.184.215.14', 443))
         conexion.sendall.assert_not_called()
         self.assertIn('TLS', resultado.limitacion)
+        self.assertIn('https://sitio.example', resultado.limitacion)
+        self.assertIn('no coincide', resultado.limitacion)
+        self.assertEqual(resultado.dominios_contactados, ('sitio.example',))
+
+    def test_certificado_vencido_detiene_el_recorrido_tras_redireccion(self):
+        rechazo = ssl.SSLCertVerificationError()
+        rechazo.verify_code = 10
+        conexion = MagicMock()
+        conexion.__enter__.return_value = conexion
+        conexion.makefile.return_value = BytesIO(
+            b'HTTP/1.1 302 Found\r\nLocation: https://otro.example/privada\r\nContent-Length: 0\r\n\r\n')
+        tls = Mock(wrap_socket=Mock(side_effect=rechazo))
+        with (patch('inspeccion.ssl.create_default_context', return_value=tls),
+              patch('inspeccion.resolver_publico', return_value='93.184.215.14'),
+              patch('socket.socket', return_value=conexion)):
+            resultado = inspeccionar('http://sitio.example/')
+        self.assertEqual(resultado.dominios_contactados, ('sitio.example', 'otro.example'))
+        self.assertEqual([p.estado for p in resultado.pasos], [302, None])
+        informe = describir(resultado)
+        self.assertIn('https://otro.example · certificado vencido', informe)
+        self.assertNotIn('privada', informe)
+        conexion.sendall.assert_called_once()
 
     def test_retorna_al_superar_el_plazo_dns(self):
         termino = Event()

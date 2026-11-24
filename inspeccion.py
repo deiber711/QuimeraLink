@@ -14,7 +14,7 @@ from urllib.parse import quote, urljoin, urlsplit, urlunsplit
 from analisis import analizar
 from analyzers.brand_analyzer import cliente_de_proveedor, es_opcion_de_proveedor, senales_marcas_en_pagina
 from analyzers.html_analyzer import Formulario, FormulariosHTML
-from analyzers.reputation import lineas_reputacion
+from analyzers.reputation import ResultadoReputacion, lineas_reputacion
 from dominios import dominio_registrable, normalizar_dominio
 from red import DestinoNoPublico, plazo_restante as _restante, resolver_publico, solicitar_publico
 
@@ -35,6 +35,8 @@ class PasoHTTP:
     origen_redireccion: str | None = None
     senales_marca_destino: tuple[str, ...] = ()
     senales_reputacion_destino: tuple[str, ...] = ()
+    puntos_marca_destino: int = 0
+    reputacion_destino: ResultadoReputacion | None = None
 
 
 @dataclass(frozen=True)
@@ -44,6 +46,7 @@ class Inspeccion:
     formularios: tuple[Formulario, ...] | None
     limitacion: str | None
     senales_contenido: tuple[str, ...] = ()
+    dominios_contactados: tuple[str, ...] = ()
 
 
 class _Pagina(HTMLParser):
@@ -190,8 +193,26 @@ def _url_http(resultado):
     return origen + urlunsplit(('', '', ruta, consulta, ''))
 
 
-def _solicitar(url, tls, limite):
-    return solicitar_publico(url, tls, limite, aceptar='text/html, application/xhtml+xml', resolver=resolver_publico)
+def _solicitar(url, tls, limite, al_conectar):
+    return solicitar_publico(url, tls, limite, aceptar='text/html, application/xhtml+xml',
+                             resolver=resolver_publico, al_conectar=al_conectar)
+
+
+def _error_certificado(exc):
+    codigo = getattr(exc, 'verify_code', None)
+    motivos = {
+        9: 'certificado aún fuera de vigencia',
+        10: 'certificado vencido',
+        18: 'certificado autofirmado sin confianza local',
+        19: 'cadena con certificado autofirmado sin confianza local',
+        20: 'no se pudo verificar el emisor',
+        21: 'no se pudo verificar la firma con la cadena disponible',
+        23: 'certificado revocado',
+        62: 'el nombre del dominio no coincide con el certificado',
+        64: 'la dirección IP no coincide con el certificado',
+    }
+    return motivos.get(codigo, f'error de verificación {codigo}' if codigo is not None
+                       else 'falló la verificación del certificado')
 
 
 def _motivo_red(exc, limite):
@@ -242,7 +263,7 @@ def _leer_html(respuesta, url, limite):
     try:
         pagina.feed(html)
         pagina.close()
-    except ValueError:
+    except (ValueError, AssertionError):
         limitacion = limitacion or 'Una parte del HTML no se pudo interpretar.'
     # El título del sitio se muestra como texto, sin controles ni marcas invisibles.
     titulo = ''.join(' ' if c.isspace() else c for c in (pagina.titulo or '')
@@ -264,6 +285,7 @@ def inspeccionar(url: str) -> Inspeccion:
     except OSError:
         return Inspeccion((), None, None, 'No se pudo inicializar la validación de certificados TLS.')
     pasos = []
+    contactados = {}
     visitados = set()
     titulo = formularios = limitacion = None
     senales_contenido = ()
@@ -272,7 +294,7 @@ def inspeccionar(url: str) -> Inspeccion:
         origen_actual = _origen(destino)
         pasos.append(PasoHTTP(origen_actual, None))
         try:
-            with _solicitar(destino, tls, limite) as respuesta:
+            with _solicitar(destino, tls, limite, contactados.setdefault) as respuesta:
                 pasos[-1] = PasoHTTP(origen_actual, respuesta.status)
                 if respuesta.status not in REDIRECCIONES:
                     if 200 <= respuesta.status < 300:
@@ -296,7 +318,9 @@ def inspeccionar(url: str) -> Inspeccion:
                     break
                 pasos[-1] = PasoHTTP(origen_actual, respuesta.status, origen_siguiente,
                                      analisis_siguiente.analisis_marca.senales,
-                                     lineas_reputacion(analisis_siguiente.reputacion, solo_coincidencias=True))
+                                     lineas_reputacion(analisis_siguiente.reputacion, solo_coincidencias=True),
+                                     analisis_siguiente.analisis_marca.puntos_sugeridos,
+                                     analisis_siguiente.reputacion)
                 if len(pasos) > MAX_REDIRECCIONES:
                     limitacion = 'Se alcanzó el límite de cinco redirecciones.'
                     break
@@ -305,12 +329,15 @@ def inspeccionar(url: str) -> Inspeccion:
                 except ValueError:
                     limitacion = 'Se bloqueó una redirección hacia una dirección no admitida.'
                     break
+        except ssl.SSLCertVerificationError as exc:
+            limitacion = f'Certificado TLS rechazado en {origen_actual} · {_error_certificado(exc)}.'
+            break
         except ERRORES_RED as exc:
             limitacion = _motivo_red(exc, limite)
             break
     else:
         limitacion = 'Se detectó un ciclo de redirecciones.'
-    return Inspeccion(tuple(pasos), titulo, formularios, limitacion, senales_contenido)
+    return Inspeccion(tuple(pasos), titulo, formularios, limitacion, senales_contenido, tuple(contactados))
 
 
 def _registrable(host):
@@ -321,7 +348,7 @@ def _registrable(host):
     return None
 
 
-def _senales_redirecciones(pasos):
+def senales_redirecciones(pasos):
     for indice, paso in enumerate(pasos):
         destino = paso.origen_redireccion
         if destino is None and indice + 1 < len(pasos):
@@ -350,6 +377,11 @@ def describir(resultado: Inspeccion) -> str:
     for paso in resultado.pasos:
         estado = f'HTTP {paso.estado}' if paso.estado is not None else 'Sin respuesta HTTP'
         lineas.append(f'• {paso.origen} · {estado}')
+        if paso.origen_redireccion:
+            lineas.append(f'  → {paso.origen_redireccion} (destino anunciado)')
+    if resultado.pasos:
+        dominios = ', '.join(resultado.dominios_contactados) or 'ninguno'
+        lineas.append(f'Dominios contactados durante la inspección · {dominios}')
     for anterior, siguiente in zip(resultado.pasos, resultado.pasos[1:]):
         origen, destino = urlsplit(anterior.origen), urlsplit(siguiente.origen)
         if (anterior.origen_redireccion == siguiente.origen and siguiente.estado is not None
@@ -370,7 +402,7 @@ def describir(resultado: Inspeccion) -> str:
             registrable = _registrable(urlsplit(ultimo.origen).hostname)
             if registrable:
                 lineas.append(f'Dominio registrable final · {registrable}')
-    senales = [*_senales_redirecciones(resultado.pasos), *resultado.senales_contenido]
+    senales = [*senales_redirecciones(resultado.pasos), *resultado.senales_contenido]
 
     if resultado.formularios is not None and respuestas:
         lineas.extend(('', f'Título · {resultado.titulo or "Sin título en el HTML inspeccionado"}'))
@@ -416,5 +448,5 @@ def describir(resultado: Inspeccion) -> str:
         lineas.extend(('', 'Señales observadas', *(f'• {senal}' for senal in dict.fromkeys(senales))))
     if resultado.limitacion:
         lineas.extend(('', f'Inspección incompleta · {resultado.limitacion}'))
-    lineas.extend(('', 'La autenticidad del sitio sigue sin confirmarse.'))
+    lineas.extend(('', 'HTTPS cifra la conexión. La autenticidad del sitio sigue sin confirmarse.'))
     return '\n'.join(lineas).strip()

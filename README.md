@@ -10,6 +10,8 @@ Después de analizar el enlace, **Consultar DNS/RDAP** comprueba el host y busca
 
 Para identificar campos sensibles, el inspector lee el tipo de control, las indicaciones de autocompletado, los nombres y las etiquetas. Reconoce, entre otros, números de tarjeta, códigos de seguridad e identificadores de cuenta bancaria. Comprueba el origen declarado por el formulario y las alternativas de sus botones, incluidos los controles asociados mediante `form`. Los formularios y destinos creados por JavaScript quedan fuera del análisis estático.
 
+El informe de red enumera los dominios con los que se estableció una conexión TCP, en orden de primer contacto. Cada redirección muestra el origen anunciado, incluso si el siguiente salto quedó bloqueado. Si la validación del certificado falla, la inspección se detiene y muestra el origen afectado y el motivo disponible. HTTPS cifra la conexión. La legitimidad del sitio requiere evidencia adicional.
+
 El sitio puede ver tu IP y recibir los identificadores presentes en el enlace. La inspección mantiene los resultados en memoria. Las direcciones del informe omiten las rutas y los parámetros. El sitio proporciona el título mostrado.
 
 La inspección también contrasta las marcas mencionadas en el título o en texto cercano a una solicitud con el dominio de la página. La señal requiere evidencia de un campo para datos personales o credenciales en el HTML recibido.
@@ -83,6 +85,12 @@ El archivo resultante es `dist/DetectorDePhishing.exe`. Incluye Python, la inter
 Las tablas de `datos_dominios` corresponden a la revisión del 20 de noviembre de 2026 de la Public Suffix List y a la versión 16.0.0 de la tabla de caracteres confusos de Unicode. Los archivos incluyen las licencias correspondientes. [Revisión de la PSL](https://github.com/publicsuffix/list/commit/d7d7f1fd55166aaf73ad2f526e72634490acd9c8) · [Tabla Unicode 16.0.0](https://www.unicode.org/Public/security/16.0.0/confusables.txt)
 
 ## Consola
+
+La consola y la función `informe.generar_informe(resultado, inspeccion=None)` ofrecen el dictamen de las reglas v1. Para obtener el resumen en JSON, ejecuta `python main.py https://example.com --json`. Se puede combinar con `--dns-rdap` o `--inspeccionar`. El JSON incluye el host, los motivos, las fuentes y sus fechas, el alcance solicitado y las limitaciones. La aplicación lo imprime en la consola y mantiene el historial desactivado.
+
+El puntaje suma una sola vez por análisis cada regla aplicable, hasta 100. Una coincidencia de reputación vigente aporta 70 puntos. Una posible suplantación de marca aporta 35. Un formulario de contraseña en esa misma página con indicios de suplantación aporta 20. Un formulario sensible con destino en otro dominio sin relación documentada aporta 20. El uso de HTTP en la página que recoge esos datos o en su receptor aporta 10. Un dominio registrado hace menos de 30 días aporta 10 si RDAP informa la fecha y el registro corresponde al dominio evaluado. La reputación también cubre los destinos anunciados durante la inspección.
+
+Desde 40 puntos el nivel es **Sospechosa** y desde 70 es **Alto riesgo**. Por debajo de 40, un indicio o una observación técnica merece **Precaución**. Sin indicios, una comprobación pendiente da **Inconcluso**. La cobertura se refiere a las comprobaciones solicitadas. Una lista ausente o vencida mantiene la cobertura parcial incluso si otra fuente activa la alerta. Los pesos son provisionales y requieren evaluación con enlaces etiquetados antes de interpretar el rendimiento del detector.
 
 ```powershell
 python main.py --actualizar-reputacion

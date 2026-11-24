@@ -136,6 +136,7 @@ def analizar_reputacion(url: ResultadoURL | str) -> ResultadoReputacion:
         return _error_local(ahora)
     try:
         with closing(sqlite3.connect(ruta.resolve().as_uri() + "?mode=ro", uri=True, timeout=0.2)) as conexion:
+            conexion.execute("BEGIN")  # Ambas fuentes se leen de la misma instantánea.
             evidencias = []
             for fuente in FUENTES:
                 try:
@@ -156,6 +157,8 @@ def _error_fuente(fuente, ahora):
 
 
 def _fecha_iso(texto):
+    if not isinstance(texto, str):
+        raise ValueError("La fecha de la fuente debe ser texto.")
     fecha = datetime.fromisoformat(texto.replace("Z", "+00:00"))
     if fecha.tzinfo is None:
         raise ValueError("La fecha de la fuente requiere zona horaria.")
