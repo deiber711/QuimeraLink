@@ -10,6 +10,19 @@ from marcas import CoincidenciaMarca
 
 
 class MarcasTests(unittest.TestCase):
+    def test_alias_del_catalogo_con_menciones_y_solicitudes(self):
+        datos = json.loads((DATOS / "marcas.json").read_text(encoding="utf-8"))
+        for ficha in datos["marcas"]:
+            for alias in [*ficha.get("distintivos", []), *ficha.get("contextuales", [])]:
+                for host in (f"noticias-{alias}.example", f"{alias}.revista.example", f"{alias}.okta.com"):
+                    with self.subTest(host=host, marca=ficha["nombre"]):
+                        self.assertEqual(analizar(host).analisis_marca.puntos_sugeridos, 0)
+                host = f"{alias}-verificacion.example"
+                with self.subTest(host=host, marca=ficha["nombre"]):
+                    marca = analizar(host).analisis_marca
+                    self.assertEqual(marca.puntos_sugeridos, 35)
+                    self.assertTrue(any(ficha["nombre"] in senal for senal in marca.senales))
+
     def test_referencias_del_catalogo(self):
         datos = json.loads((DATOS / "marcas.json").read_text(encoding="utf-8"))
         date.fromisoformat(datos["fecha_revision"])

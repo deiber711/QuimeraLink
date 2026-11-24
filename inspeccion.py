@@ -1,6 +1,5 @@
 """Inspección opcional de respuestas HTTP y del HTML recibido."""
 from collections import Counter
-from contextlib import closing, contextmanager, suppress
 from dataclasses import dataclass
 from html import unescape
 from html.parser import HTMLParser
@@ -8,15 +7,16 @@ import http.client
 from ipaddress import ip_address
 import socket
 import ssl
-from threading import Timer
 from time import monotonic
 import unicodedata
 from urllib.parse import quote, urljoin, urlsplit, urlunsplit
 
 from analisis import analizar
-from analyzers.brand_analyzer import senales_marcas_en_pagina
-from dominios import dominio_registrable
-from red import DestinoNoPublico, resolver_publico
+from analyzers.brand_analyzer import cliente_de_proveedor, es_opcion_de_proveedor, senales_marcas_en_pagina
+from analyzers.html_analyzer import Formulario, FormulariosHTML
+from analyzers.reputation import lineas_reputacion
+from dominios import dominio_registrable, normalizar_dominio
+from red import DestinoNoPublico, plazo_restante as _restante, resolver_publico, solicitar_publico
 
 
 MAX_REDIRECCIONES = 5
@@ -33,12 +33,8 @@ class PasoHTTP:
     origen: str
     estado: int | None
     origen_redireccion: str | None = None
-
-
-@dataclass(frozen=True)
-class Formulario:
-    origen: str | None
-    tiene_password: bool
+    senales_marca_destino: tuple[str, ...] = ()
+    senales_reputacion_destino: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -58,13 +54,11 @@ class _Pagina(HTMLParser):
         super().__init__()
         self.base = None
         self.titulo = None
-        self.formularios = []
+        self.formularios = FormulariosHTML()
         self._en_titulo = False
         self._plantillas = 0
-        self._formulario = None
-        self._con_password = set()
-        self._ids_con_password = set()
         self._texto = []
+        self._enlace = None
         self._presupuesto_texto = MAX_TEXTO_MARCAS
         self._en_etiqueta = False
         self._etiqueta_personal = False
@@ -77,23 +71,18 @@ class _Pagina(HTMLParser):
         if self._plantillas:
             return
         atributos = dict(reversed(attrs))  # El primer atributo con un nombre prevalece.
-        if tag == 'base' and self.base is None and 'href' in atributos:
+        self.formularios.inicio(tag, atributos)
+        if tag == 'a':
+            self._enlace = (len(self._texto), atributos.get('href') or '')
+        elif tag == 'base' and self.base is None and 'href' in atributos:
             self.base = atributos['href'] or ''
         elif tag == 'title' and self.titulo is None:
             self.titulo = ''
             self._en_titulo = True
-        elif tag == 'form' and self._formulario is None:
-            self._formulario = len(self.formularios)
-            self.formularios.append(atributos)
         elif tag == 'label':
             self._en_etiqueta = True
         elif tag == 'input':
             tipo = (atributos.get('type') or 'text').lower()
-            if tipo == 'password':
-                if 'form' in atributos:
-                    self._ids_con_password.add(atributos['form'])
-                elif self._formulario is not None:
-                    self._con_password.add(self._formulario)
             if tipo in {'text', 'number', 'tel', 'password'} and not {'disabled', 'readonly', 'hidden'} & atributos.keys():
                 self._campo_editable = True
                 autocompletar = (atributos.get('autocomplete') or '').lower().split()
@@ -104,12 +93,16 @@ class _Pagina(HTMLParser):
         if tag == 'template' and self._plantillas:
             self._plantillas -= 1
         elif not self._plantillas:
-            if tag == 'form':
-                self._formulario = None
-            elif tag == 'title':
+            self.formularios.fin(tag)
+            if tag == 'title':
                 self._en_titulo = False
             elif tag == 'label':
                 self._en_etiqueta = False
+            elif tag == 'a' and self._enlace is not None:
+                inicio, href = self._enlace
+                self._enlace = None
+                if self._presupuesto_texto and es_opcion_de_proveedor(' '.join(self._texto[inicio:]), href):
+                    del self._texto[inicio:]
 
     def handle_startendtag(self, tag, attrs):
         self.handle_starttag(tag, attrs)
@@ -120,6 +113,7 @@ class _Pagina(HTMLParser):
         if self._en_titulo:
             self.titulo = (self.titulo + unescape(data))[:512]
         elif self.cdata_elem is None:
+            self.formularios.datos(data)
             if self._en_etiqueta and any(palabra in data.casefold() for palabra in (
                 'celular', 'teléfono', 'telefono', 'contraseña', 'número de línea', 'número de tarjeta'
             )):
@@ -129,25 +123,31 @@ class _Pagina(HTMLParser):
                 self._texto.append(fragmento)
                 self._presupuesto_texto -= len(fragmento)
 
-    def senales_contenido(self, host, titulo):
+    def senales_contenido(self, url, titulo):
         if self._campo_personal or (self._campo_editable and self._etiqueta_personal):
-            return tuple(senales_marcas_en_pagina(host, _registrable(host), titulo, ' '.join(self._texto)))
+            partes = urlsplit(url)
+            return tuple(senales_marcas_en_pagina(
+                partes.hostname, _registrable(partes.hostname), titulo, ' '.join(self._texto),
+                https_estandar=partes.scheme == 'https' and partes.port in (None, 443),
+            ))
         return ()
 
     def destinos(self, url):
-        base = _referencia(url, self.base) if self.base else url
-        destinos = []
-        ids = set()
-        for indice, atributos in enumerate(self.formularios):
-            identificador = atributos.get('id')
-            asociado = bool(identificador and identificador not in ids and identificador in self._ids_con_password)
-            if identificador:
-                ids.add(identificador)
-            accion = (atributos.get('action') or '').strip()
-            destino = _referencia(base or url, accion) if accion else url
-            origen = None if (atributos.get('method') or '').lower() == 'dialog' else _origen(destino)
-            destinos.append(Formulario(origen, asociado or indice in self._con_password))
-        return tuple(destinos)
+        base = _referencia_formulario(url, self.base) if self.base else url
+        return self.formularios.resultados(url, base, _referencia_formulario, _origen)
+
+
+def _referencia_formulario(base, referencia):
+    # Las barras invertidas y autoridades ambiguas se interpretan de forma distinta en navegadores.
+    if chr(92) in referencia or referencia.startswith('///') or any(ord(c) < 32 for c in referencia):
+        return ''
+    try:
+        partes = urlsplit(referencia)
+        if partes.scheme in ('http', 'https') and not partes.netloc:
+            return ''
+    except ValueError:
+        return ''
+    return _referencia(base, referencia)
 
 
 def _referencia(base, referencia):
@@ -165,7 +165,8 @@ def _origen(url, *, host=None):
         if partes.scheme not in ('http', 'https') or not partes.hostname:
             return None
         if host is None:
-            host = partes.hostname.rstrip('.').encode('idna').decode('ascii')
+            host = (ip_address(partes.hostname).compressed if ':' in partes.hostname
+                    else normalizar_dominio(partes.hostname)[0])
         if not host or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789.-:' for c in host):
             return None
         autoridad = f'[{host}]' if ':' in host else host
@@ -189,44 +190,8 @@ def _url_http(resultado):
     return origen + urlunsplit(('', '', ruta, consulta, ''))
 
 
-def _restante(limite):
-    tiempo = limite - monotonic()
-    if tiempo <= 0:
-        raise TimeoutError
-    return tiempo
-
-
-def _interrumpir(canal):
-    with suppress(OSError):
-        canal.shutdown(socket.SHUT_RDWR)
-
-
-@contextmanager
 def _solicitar(url, tls, limite):
-    partes = urlsplit(url)
-    puerto = partes.port or (443 if partes.scheme == 'https' else 80)
-    ip = resolver_publico(partes.hostname, puerto, timeout=min(5, _restante(limite)))
-    familia = socket.AF_INET6 if ':' in ip else socket.AF_INET
-    with socket.socket(familia, socket.SOCK_STREAM) as tcp:
-        # La conexión usa la IP validada y TLS verifica el nombre de la URL.
-        tcp.settimeout(min(5, _restante(limite)))
-        tcp.connect((ip, puerto))
-        tcp.settimeout(min(5, _restante(limite)))
-        canal = tls.wrap_socket(tcp, server_hostname=partes.hostname) if partes.scheme == 'https' else tcp
-        with closing(canal), closing(http.client.HTTPConnection(partes.hostname, puerto)) as conexion:
-            conexion.sock = canal
-            canal.settimeout(min(5, _restante(limite)))
-            # El plazo total también se aplica a respuestas que llegan byte a byte.
-            alarma = Timer(_restante(limite), _interrumpir, args=(canal,))
-            alarma.daemon = True
-            alarma.start()
-            try:
-                ruta = urlunsplit(('', '', partes.path, partes.query, ''))
-                conexion.request('GET', ruta, headers={'Accept': 'text/html, application/xhtml+xml'})
-                with closing(conexion.getresponse()) as respuesta:
-                    yield respuesta
-            finally:
-                alarma.cancel()
+    return solicitar_publico(url, tls, limite, aceptar='text/html, application/xhtml+xml', resolver=resolver_publico)
 
 
 def _motivo_red(exc, limite):
@@ -283,7 +248,7 @@ def _leer_html(respuesta, url, limite):
     titulo = ''.join(' ' if c.isspace() else c for c in (pagina.titulo or '')
                      if c.isspace() or not unicodedata.category(c).startswith('C'))
     titulo = ' '.join(titulo.split())[:160] or None
-    return titulo, pagina.destinos(url), limitacion, pagina.senales_contenido(urlsplit(url).hostname, titulo)
+    return titulo, pagina.destinos(url), limitacion, pagina.senales_contenido(url, titulo)
 
 
 def inspeccionar(url: str) -> Inspeccion:
@@ -329,7 +294,9 @@ def inspeccionar(url: str) -> Inspeccion:
                 if origen_siguiente is None:
                     limitacion = 'La redirección indicó un destino HTTP o HTTPS inválido.'
                     break
-                pasos[-1] = PasoHTTP(origen_actual, respuesta.status, origen_siguiente)
+                pasos[-1] = PasoHTTP(origen_actual, respuesta.status, origen_siguiente,
+                                     analisis_siguiente.analisis_marca.senales,
+                                     lineas_reputacion(analisis_siguiente.reputacion, solo_coincidencias=True))
                 if len(pasos) > MAX_REDIRECCIONES:
                     limitacion = 'Se alcanzó el límite de cinco redirecciones.'
                     break
@@ -362,6 +329,8 @@ def _senales_redirecciones(pasos):
         if destino is None:
             continue
         anterior, siguiente = urlsplit(paso.origen), urlsplit(destino)
+        for senal in (*paso.senales_marca_destino, *paso.senales_reputacion_destino):
+            yield f'Destino anunciado · {siguiente.hostname} · {senal}'
         if anterior.hostname != siguiente.hostname:
             origen_registrable = _registrable(anterior.hostname)
             destino_registrable = _registrable(siguiente.hostname)
@@ -381,6 +350,13 @@ def describir(resultado: Inspeccion) -> str:
     for paso in resultado.pasos:
         estado = f'HTTP {paso.estado}' if paso.estado is not None else 'Sin respuesta HTTP'
         lineas.append(f'• {paso.origen} · {estado}')
+    for anterior, siguiente in zip(resultado.pasos, resultado.pasos[1:]):
+        origen, destino = urlsplit(anterior.origen), urlsplit(siguiente.origen)
+        if (anterior.origen_redireccion == siguiente.origen and siguiente.estado is not None
+                and origen.scheme == destino.scheme == 'https' and origen.port is None and destino.port is None):
+            cliente = cliente_de_proveedor(origen.hostname, _registrable(origen.hostname), destino.hostname)
+            if cliente:
+                lineas.append(f'{cliente} tiene registrado a {destino.hostname} como proveedor de acceso.')
     if resultado.pasos and resultado.pasos[-1].origen_redireccion:
         lineas.append(f'Destino anunciado por la última redirección · {resultado.pasos[-1].origen_redireccion}')
 
@@ -399,23 +375,42 @@ def describir(resultado: Inspeccion) -> str:
     if resultado.formularios is not None and respuestas:
         lineas.extend(('', f'Título · {resultado.titulo or "Sin título en el HTML inspeccionado"}'))
         cantidad = sum(formulario.tiene_password for formulario in resultado.formularios)
-        lineas.append(f'Formularios en el HTML inspeccionado · {len(resultado.formularios)} ({cantidad} con contraseña)')
+        financieros = sum(f.datos_financieros for f in resultado.formularios)
+        lineas.append(f'Formularios en el HTML inspeccionado · {len(resultado.formularios)} '
+                      f'({cantidad} con contraseña, {financieros} con datos financieros)')
         grupos = Counter(resultado.formularios)
-        orden = sorted(grupos, key=lambda f: (f.tiene_password and f.origen not in (None, ultimo.origen),
-                                               f.tiene_password, grupos[f]), reverse=True)
-        principales = orden[:8]
+
+        def receptores(f):
+            return (f.origen, *f.destinos_botones)
+
+        def prioridad(f):
+            sensible = f.tiene_password or f.datos_financieros
+            riesgo = any(o and (o != ultimo.origen or o.startswith('http://')) for o in receptores(f))
+            return sensible and riesgo, sensible, grupos[f]
+
+        principales = sorted(grupos, key=prioridad, reverse=True)[:8]
         for formulario in principales:
-            etiqueta = 'con contraseña' if formulario.tiene_password else 'sin contraseña'
-            destino = formulario.origen or 'sin destino HTTP o HTTPS'
+            campos = []
+            if formulario.tiene_password:
+                campos.append('contraseña')
+            if formulario.datos_financieros:
+                campos.append('datos financieros')
+            etiqueta = 'con ' + ' y '.join(campos) if campos else 'sin campos sensibles detectados'
+            destino = formulario.origen or 'sin destino HTTP o HTTPS identificable'
             lineas.append(f'• {grupos[formulario]} {etiqueta} · {destino}')
+            for opcion in formulario.destinos_botones[:8]:
+                lineas.append(f'  Destino por botón · {opcion or "sin destino HTTP o HTTPS identificable"}')
+            if len(formulario.destinos_botones) > 8:
+                lineas.append(f'  Otros destinos por botón · {len(formulario.destinos_botones) - 8}')
         restantes = len(resultado.formularios) - sum(grupos[f] for f in principales)
         if restantes:
             lineas.append(f'• {restantes} formularios más')
-        destinos = {f.origen for f in grupos if f.tiene_password and f.origen}
-        if destinos.difference({ultimo.origen}):
-            senales.append('Un formulario de contraseña apunta a otro origen.')
-        if any(origen.startswith('http://') for origen in destinos):
-            senales.append('Un formulario de contraseña apunta a una dirección HTTP.')
+        for atributo, nombre in (('tiene_password', 'contraseña'), ('datos_financieros', 'datos financieros')):
+            destinos = {o for f in grupos if getattr(f, atributo) for o in receptores(f) if o}
+            if destinos.difference({ultimo.origen}):
+                senales.append(f'Un formulario de {nombre} apunta a otro origen.')
+            if any(o.startswith('http://') for o in destinos):
+                senales.append(f'Un formulario de {nombre} apunta a una dirección HTTP.')
 
     if senales:
         lineas.extend(('', 'Señales observadas', *(f'• {senal}' for senal in dict.fromkeys(senales))))

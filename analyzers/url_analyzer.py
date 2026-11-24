@@ -1,6 +1,6 @@
 """Extrae el destino real y las señales técnicas de una URL sin visitarla."""
 from collections.abc import Collection
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from ipaddress import IPv6Address, ip_address
 import re
 import unicodedata
@@ -31,6 +31,7 @@ class ResultadoURL:
     es_acortador: bool
     senales: tuple[str, ...]
     url_captura: str | None
+    clave_reputacion: str | None = field(default=None, repr=False, compare=False)
 
 
 ESQUEMA = re.compile(r"^[a-z][a-z0-9+.-]*://", re.IGNORECASE | re.ASCII)
@@ -135,6 +136,16 @@ def analizar_url(texto: str, *, acortadores_conocidos: Collection[str] = ACORTAD
         senales.append("El dominio contiene caracteres Unicode que pueden confundirse con los de otro nombre.")
     senales.extend(_senales_direccion(host, registrable, partes.path))
     autoridad = f"[{host}]" if ip and ip.version == 6 else host
+    clave_reputacion = None
+    if not tiene_credenciales:
+        autoridad_reputacion = autoridad
+        if puerto is not None and puerto != (443 if partes.scheme == "https" else 80):
+            autoridad_reputacion += f":{puerto}"
+        clave_reputacion = f"{partes.scheme}://{autoridad_reputacion}{partes.path or '/'}"
+        sin_fragmento, separador, fragmento = texto.partition("#")
+        if "?" in sin_fragmento:
+            clave_reputacion += "?" + partes.query
+        clave_reputacion += separador + fragmento
     if puerto is not None:
         autoridad += f":{puerto}"
     url = urlunsplit((partes.scheme, autoridad, partes.path, partes.query, partes.fragment))
@@ -153,4 +164,5 @@ def analizar_url(texto: str, *, acortadores_conocidos: Collection[str] = ACORTAD
         es_acortador=es_acortador,
         senales=tuple(senales),
         url_captura=url if capturable else None,
+        clave_reputacion=clave_reputacion,
     )

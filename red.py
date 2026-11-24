@@ -1,8 +1,12 @@
 """Resolución de destinos para las operaciones web opcionales."""
+from contextlib import closing, contextmanager, suppress
+import http.client
 from ipaddress import ip_address
 from queue import Empty, Queue
 import socket
-from threading import BoundedSemaphore, Thread
+from threading import BoundedSemaphore, Thread, Timer
+from time import monotonic
+from urllib.parse import urlsplit, urlunsplit
 
 
 class DestinoNoPublico(ValueError):
@@ -56,3 +60,42 @@ def resolver_publico(host, puerto, *, timeout=None):
     if isinstance(resultado, Exception):
         raise resultado
     return resultado
+
+
+def plazo_restante(limite):
+    tiempo = limite - monotonic()
+    if tiempo <= 0:
+        raise TimeoutError
+    return tiempo
+
+
+def _interrumpir(canal):
+    with suppress(OSError):
+        canal.shutdown(socket.SHUT_RDWR)
+
+
+@contextmanager
+def solicitar_publico(url, tls, limite, *, aceptar, resolver=resolver_publico):
+    partes = urlsplit(url)
+    puerto = partes.port or (443 if partes.scheme == 'https' else 80)
+    ip = resolver(partes.hostname, puerto, timeout=min(5, plazo_restante(limite)))
+    familia = socket.AF_INET6 if ':' in ip else socket.AF_INET
+    with socket.socket(familia, socket.SOCK_STREAM) as tcp:
+        # La conexión usa la IP validada y TLS verifica el nombre de la URL.
+        tcp.settimeout(min(5, plazo_restante(limite)))
+        tcp.connect((ip, puerto))
+        tcp.settimeout(min(5, plazo_restante(limite)))
+        canal = tls.wrap_socket(tcp, server_hostname=partes.hostname) if partes.scheme == 'https' else tcp
+        with closing(canal), closing(http.client.HTTPConnection(partes.hostname, puerto)) as conexion:
+            conexion.sock = canal
+            canal.settimeout(min(5, plazo_restante(limite)))
+            alarma = Timer(plazo_restante(limite), _interrumpir, args=(canal,))
+            alarma.daemon = True
+            alarma.start()
+            try:
+                ruta = urlunsplit(('', '', partes.path or '/', partes.query, ''))
+                conexion.request('GET', ruta, headers={'Accept': aceptar})
+                with closing(conexion.getresponse()) as respuesta:
+                    yield respuesta
+            finally:
+                alarma.cancel()

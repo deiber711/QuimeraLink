@@ -1293,6 +1293,9 @@
       ],
       "dominios": {
         "ssa.gov": "https://www.ssa.gov/"
+      },
+      "proveedores_autenticacion": {
+        "secure.login.gov": "https://www.ssa.gov/myaccount/creating-an-account.html"
       }
     },
     {
@@ -1306,7 +1309,7 @@
         "login.gov": "https://www.login.gov/"
       },
       "autenticacion": {
-        "secure.login.gov": "https://www.login.gov/"
+        "secure.login.gov": "https://www.login.gov/help/manage-your-account/add-or-change-your-authentication-method/"
       }
     },
     {
@@ -2174,7 +2177,8 @@
       ],
       "hosts": {
         "slack.com": "https://slack.com/",
-        "www.slack.com": "https://slack.com/"
+        "www.slack.com": "https://slack.com/",
+        "app.slack.com": "https://slack.com/help/articles/221769328-Locate-your-Slack-URL-or-ID"
       }
     },
     {
@@ -2187,6 +2191,10 @@
       "dominios": {
         "zoom.com": "https://www.zoom.com/",
         "zoom.us": "https://zoom.us/"
+      },
+      "hosts": {
+        "www.zoom.com": "https://www.zoom.com/",
+        "support.zoom.com": "https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0061708"
       }
     },
     {
@@ -2437,11 +2445,31 @@
         "chatgpt.com": "https://help.openai.com/en/articles/11725090-verifying-communications-from-openai"
       },
       "autenticacion": {
-        "auth.openai.com": "https://help.openai.com/en/articles/9247338-network-recommendations-for-chatgpt-errors-on-web-and-apps%25253F.iso"
+        "auth.openai.com": "https://help.openai.com/en/articles/7426629-why-cant-i-log-in-to-chatgpt"
+      },
+      "proveedores_autenticacion": {
+        "accounts.google.com": "https://help.openai.com/en/articles/4936824-changing-your-account-sign-in-method",
+        "login.microsoftonline.com": "https://help.openai.com/en/articles/4936824-changing-your-account-sign-in-method",
+        "appleid.apple.com": "https://help.openai.com/en/articles/4936824-changing-your-account-sign-in-method"
       }
     }
   ],
   "plataformas_autenticacion": [
+    {
+      "proveedor": "Slack",
+      "sufijo": "slack.com",
+      "fuente": "https://slack.com/help/articles/221769328-Locate-your-Slack-URL-or-ID"
+    },
+    {
+      "proveedor": "Zoom",
+      "sufijo": "zoom.us",
+      "fuente": "https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0061708"
+    },
+    {
+      "proveedor": "Zoom",
+      "sufijo": "zoom.com",
+      "fuente": "https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0065487"
+    },
     {
       "proveedor": "Okta",
       "sufijo": "okta.com",

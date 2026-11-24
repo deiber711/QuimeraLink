@@ -45,6 +45,92 @@ def simular(*respuestas):
 
 
 class InspeccionTests(unittest.TestCase):
+    def test_datos_financieros_y_destinos_por_boton_sin_contactarlos(self):
+        pagina = b'''
+            <base href="https://pagos.example/">
+            <input form="pago" autocomplete="section-order billing cc-number" value="privado">
+            <form id="pago" action="cobrar?token=oculto">
+              <input autocomplete="current-password">
+              <button formaction="">Continuar</button>
+              <button disabled formaction="//inactivo.example">Otro</button>
+            </form>
+            <input type="image" form="pago" formaction="http://procesador.example:8080/reserva">
+        '''
+        with simular(html(pagina)) as pedir:
+            resultado = inspeccionar('https://tienda.example/')
+        pedir.assert_called_once()
+        self.assertEqual(resultado.formularios, (Formulario('https://pagos.example', True, True,
+                         ('https://tienda.example', 'http://procesador.example:8080')),))
+        informe = describir(resultado)
+        self.assertIn('datos financieros apunta a una dirección HTTP', informe)
+        for privado in ('token', 'oculto', 'privado', 'reserva', 'inactivo'):
+            self.assertNotIn(privado, informe)
+
+    def test_etiquetas_asociadas_y_formularios_sin_senales(self):
+        pagina = '''
+            <form id="p"><input id="campo"></form>
+            <label for="campo">Número de <b>tarjeta</b></label>
+            <form><label>IBAN <input name="campo"></label></form>
+            <form><input name="accountNumber"></form>
+            <form><input type="hidden" name="cvv"><input disabled type="password">
+              <label for="ausente">Contraseña</label><input placeholder="Correo"></form>
+        '''
+        with simular(html(pagina.encode())):
+            resultado = inspeccionar('https://tienda.example/')
+        self.assertEqual([f.datos_financieros for f in resultado.formularios], [True, True, True, False])
+        self.assertFalse(any(f.tiene_password for f in resultado.formularios))
+        self.assertNotIn('Señales observadas', describir(resultado))
+
+    def test_relacion_documentada_distingue_proveedor_y_cliente(self):
+        titulo = b'<title>Social Security Administration</title><input type="password">'
+        for origen, destino, relacion, alerta in (
+            ('https://www.ssa.gov', 'https://secure.login.gov', True, False),
+            ('https://otro.example', 'https://secure.login.gov', False, False),
+            ('https://www.ssa.gov', 'https://otro.secure.login.gov', False, True),
+            ('https://www.ssa.gov', 'https://secure.login.gov.example', False, True),
+            ('https://www.ssa.gov', 'http://secure.login.gov', False, True),
+            ('https://www.ssa.gov', 'https://secure.login.gov:80', False, True),
+        ):
+            with self.subTest(origen=origen, destino=destino), simular(redireccion(destino), html(titulo)):
+                resultado = inspeccionar(origen)
+                informe = describir(resultado)
+                self.assertEqual('tiene registrado' in informe, relacion)
+                self.assertEqual(bool(resultado.senales_contenido), alerta)
+                self.assertIn('Destino final', informe)
+                if destino.startswith('http:'):
+                    self.assertIn('de HTTPS a HTTP', informe)
+
+    def test_proveedor_conocido_no_exime_la_cadena_ni_el_formulario(self):
+        with simular(redireccion('https://accounts.google.com'), html(
+            b'<title>Inicia sesion en OpenAI</title><form action="https://otro.example">'
+            b'<input type="password"></form>'
+        )):
+            resultado = inspeccionar('https://auth.openai.com')
+        self.assertFalse(resultado.senales_contenido)
+        self.assertIn('OpenAI tiene registrado a accounts.google.com', describir(resultado))
+        self.assertIn('contraseña apunta a otro origen', describir(resultado))
+
+        with simular(redireccion('https://accounts.google.com'), redireccion('https://nequi-premios.example'),
+                     html(b'<title>Inicio</title>')):
+            informe = describir(inspeccionar('https://auth.openai.com'))
+        self.assertIn('Destino anunciado · nequi-premios.example', informe)
+        self.assertIn('Nequi', informe)
+
+    def test_mencion_editorial_y_opcion_de_acceso_no_suplantan_al_proveedor(self):
+        enlace = b'<a href="https://accounts.google.com/o/oauth2/v2/auth">Continuar con <b>Google</b></a>'
+        pagina = b'<title>Noticias de Bancolombia</title><p>Ingresa tu clave</p><input type="password">'
+        with simular(html(pagina + enlace)):
+            self.assertFalse(inspeccionar('https://revista.example').senales_contenido)
+        for contenido in (pagina + enlace + b'<p>Ingresa tu clave de Google</p>',
+                          pagina + enlace.replace(b'accounts.google.com/', b'accounts.google.com.example/')):
+            with self.subTest(contenido=contenido), simular(html(contenido)):
+                self.assertTrue(any('Google' in s for s in inspeccionar('https://revista.example').senales_contenido))
+
+    def test_el_nombre_del_tenant_no_establece_una_relacion_documentada(self):
+        pagina = b'<title>Acceso a Bancolombia</title><input type="password">'
+        with simular(html(pagina)):
+            self.assertTrue(inspeccionar('https://bancolombia.okta.com').senales_contenido)
+
     def test_contrasta_marca_y_solicitud_de_datos_con_el_dominio(self):
         factura = b'''<title>Consulta tu factura</title>
             <p>Ingresa tu n&uacute;mero de l&iacute;nea Movistar</p>

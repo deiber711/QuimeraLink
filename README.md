@@ -2,7 +2,13 @@
 
 Abre el ejecutable **DetectorDePhishing.exe**, pega un enlace y pulsa **Analizar enlace**. El programa muestra el nombre de host de destino, el dominio registrable cuando existe y las señales encontradas. Revisa la dirección en tu equipo sin abrirla, enviarla a un servicio ni guardar un historial. Un resultado sin señales deja la autenticidad del sitio sin confirmar.
 
-**Inspeccionar página** visita el enlace desde tu conexión. Muestra los orígenes y estados HTTP del recorrido, el origen final, su dominio registrable, el título y los destinos declarados por los formularios del HTML estático. Sigue hasta cinco redirecciones y valida cada salto antes de conectarse. Señala los cambios de dominio registrable y los saltos de HTTPS a HTTP, así como los formularios con campos de contraseña que apuntan a otro origen o a una dirección HTTP. Si el recorrido se interrumpe, identifica el último origen que respondió e indica el destino anunciado cuando el servidor lo proporcionó en una redirección válida. La inspección usa solicitudes GET, sin ejecutar JavaScript, cargar recursos de la página ni enviar formularios.
+Pulsa **Actualizar listas de reputación** para consultar a los proveedores y guardar sus listas en el equipo. Después, **Analizar enlace** busca coincidencias en esas copias incluso sin conexión. La actualización descarga listas completas y prescinde de la dirección que esté en el campo de texto.
+
+Después de analizar el enlace, **Consultar DNS/RDAP** comprueba el host y busca el registro del dominio. Google Public DNS y el operador del registro reciben los nombres consultados y ven la IP de la conexión. El programa conserva la consulta en memoria y omite la ruta, parámetros, fragmento y credenciales.
+
+**Inspeccionar página** visita el enlace desde tu conexión. Muestra los orígenes y estados HTTP del recorrido, el origen final, su dominio registrable, el título y los destinos declarados por los formularios del HTML estático. Sigue hasta cinco redirecciones y valida cada salto antes de conectarse. Señala los cambios de dominio registrable y los saltos de HTTPS a HTTP, así como los formularios con campos de contraseña o datos financieros que apuntan a otro origen o a una dirección HTTP. Si el recorrido se interrumpe, identifica el último origen que respondió e indica el destino anunciado cuando el servidor lo proporcionó en una redirección válida. La inspección usa solicitudes GET, sin ejecutar JavaScript, cargar recursos de la página ni enviar formularios.
+
+Para identificar campos sensibles, el inspector lee el tipo de control, las indicaciones de autocompletado, los nombres y las etiquetas. Reconoce, entre otros, números de tarjeta, códigos de seguridad e identificadores de cuenta bancaria. Comprueba el origen declarado por el formulario y las alternativas de sus botones, incluidos los controles asociados mediante `form`. Los formularios y destinos creados por JavaScript quedan fuera del análisis estático.
 
 El sitio puede ver tu IP y recibir los identificadores presentes en el enlace. La inspección mantiene los resultados en memoria. Las direcciones del informe omiten las rutas y los parámetros. El sitio proporciona el título mostrado.
 
@@ -26,14 +32,29 @@ El archivo [datos_dominios/marcas.json](datos_dominios/marcas.json) registra mar
 
 - `dominios` reúne dominios registrables verificados. `hosts` y `autenticacion` se limitan a la coincidencia exacta del nombre de host. Así se puede documentar un portal delegado, como la autenticación de GOV.CO en `autenticaciondigital.and.gov.co`. [Ministerio TIC](https://mintic.gov.co/micrositios/rendicion-cuentas/2021/787/w3-propertyvalue-377132.html)
 - `plataformas_autenticacion` identifica infraestructura compartida, como Okta, Auth0 o Microsoft Entra. En esos sufijos el informe identifica al proveedor. Atribuir un host concreto a otra organización requiere una relación exacta documentada en el catálogo. Las demás señales de la URL siguen activas. [Okta](https://developer.okta.com/docs/guides/find-your-domain/) · [Auth0](https://support.auth0.com/center/s/article/Change-the-Tenant-Domain-Name) · [Microsoft Entra](https://learn.microsoft.com/en-us/azure/active-directory-b2c/b2clogin)
+- `proveedores_autenticacion` documenta qué hosts de acceso externos admite cada entidad. Durante la inspección de un recorrido HTTPS, el informe identifica el salto desde la entidad al proveedor registrado. Un enlace aislado al proveedor identifica únicamente a ese proveedor. La aplicación que solicita acceso y los permisos solicitados siguen requiriendo verificación. [Acceso a Social Security](https://www.ssa.gov/myaccount/creating-an-account.html) · [Opciones de acceso de OpenAI](https://help.openai.com/en/articles/4936824-changing-your-account-sign-in-method)
+- Una mención como `noticias-bancolombia.example` recibe cero puntos. La combinación de una marca y una acción como `nequi-premios.example`, una imitación visual o un dominio oficial incrustado dentro de otro puede recibir 35. En la inspección, una relación de acceso documentada conserva las advertencias sobre el envío de contraseñas a otro origen.
 - `distintivos` contiene alias que admiten comparación visual y similitud de Levenshtein a partir de 0,85. También se comprueban cambios individuales y transposiciones. La regla complementaria admite dos cambios en etiquetas principales largas o nombres distintivos con contexto. `contextuales` contiene siglas y palabras comunes que se evalúan con señales adicionales. Las pruebas verifican las referencias y el alcance de cada entrada sin hacer consultas de red.
 
-### Fuentes de reputación evaluadas
+## Reputación
 
-- **OpenPhish Community Feed.** Publica una selección limitada de URLs cada 12 horas. Sus términos exigen consentimiento escrito para uso comercial. [Planes de OpenPhish](https://www.openphish.com/phishing_feeds.html) · [Términos de uso](https://www.openphish.com/terms.html)
-- **PhishTank.** Ofrece descargas de URLs verificadas por la comunidad con actualización horaria y una API con límites de consultas. Una copia local sería una opción para añadir señales de reputación en el futuro. [Documentación de PhishTank](https://phishtank.org/developer_info.php)
+- **PhishTank.** Compara la URL exacta con el CSV de URLs verificadas y activas, que la fuente publica cada hora. La comparación normaliza el host a ASCII, el puerto predeterminado y la ruta raíz. Conserva el esquema, la ruta, los parámetros y el fragmento. La actualización es manual para respetar los límites de descarga sin clave. [Documentación de PhishTank](https://phishtank.org/developer_info.php) · [Términos de PhishTank](https://phishtank.org/terms.php)
+- **CERT Polska.** Compara el nombre de host con la lista de dominios activos. Un dominio listado cubre sus subdominios por etiquetas completas. Una entrada `acceso.example.com` cubre `www.acceso.example.com`, y `example.com` requiere su propia entrada. La fuente se centra en campañas dirigidas a usuarios en Polonia. [Lista de advertencias de CERT Polska](https://cert.pl/en/warning-list/)
+- **Otras fuentes evaluadas.** OpenPhish Community publica una selección limitada cada 12 horas bajo términos de uso personal. El CSIRT de la Policía Nacional de Colombia publica alertas e indicadores por campaña que sirven para revisar la cobertura local. [Planes de OpenPhish](https://www.openphish.com/phishing_feeds.html) · [Términos de OpenPhish](https://openphish.com/terms.html) · [Alertas del CSIRT-PONAL](https://cc-csirt.policia.gov.co/alertas-tips)
 
-El motor actual carga sólo el catálogo local. Una futura integración de reputación aportaría evidencia sobre URLs observadas y conservaría los resultados de las reglas locales cuando el servicio externo no esté disponible.
+El informe registra la fecha de consulta, la fecha de la copia y, cuando la fuente la facilita, la fecha de verificación del indicador. Las fechas se muestran en UTC. El programa considera vigentes las copias de hasta **24 horas**, calculadas desde `Last-Modified` o, cuando falta esa cabecera, desde la descarga. Este límite es una decisión del proyecto para la consulta manual. Una coincidencia vigente muestra **Alto riesgo por reputación** y aporta 70 puntos sugeridos en total aunque coincidan las dos fuentes. Una coincidencia en una copia vencida se conserva como antecedente con 0 puntos.
+
+Si una copia falta o está vencida, una consulta sin coincidencia tiene estado `desconocido`. Si falla la lectura, tiene estado `error`. **La ausencia en una lista no confirma la legitimidad del enlace.** Durante una inspección web, el informe también muestra las coincidencias locales de los destinos anunciados por las redirecciones.
+
+La caché de Windows se guarda en `%LOCALAPPDATA%\PhishGuard\reputacion.sqlite3`. Conserva dominios de CERT Polska y huellas SHA-256 de las URLs publicadas por PhishTank. Cada fuente se actualiza de forma independiente y un fallo conserva su última copia. El programa mantiene en memoria la consulta del usuario y omite las rutas, parámetros y fragmentos en el informe de reputación.
+
+## DNS y RDAP
+
+- **DNS** consulta el host exacto por HTTPS. Busca un registro A y, si hace falta, AAAA. Distingue `NXDOMAIN`, un nombre o alias sin direcciones confirmadas y una consulta incompleta o fallida. Google Public DNS recibe el nombre de host y ve la IP de la conexión. La solicitud desactiva el envío de la subred del cliente a servidores autoritativos mediante EDNS Client Subnet. [API de Google Public DNS](https://developers.google.com/speed/public-dns/docs/doh/json) · [Respuestas negativas en DNS](https://www.rfc-editor.org/rfc/rfc2308.html)
+- **RDAP** consulta el dominio registrable del registro público. En una plataforma compartida como `pages.dev`, las fechas describen el dominio de la plataforma. El informe muestra fecha de registro, antigüedad en días completos, vencimiento, último cambio, registrador y estados cuando están disponibles. Las fechas se muestran en UTC. La antigüedad parte del evento `registration` publicado por el registro. [Formato de consultas RDAP](https://www.rfc-editor.org/rfc/rfc9082.html) · [Eventos y objetos RDAP](https://www.rfc-editor.org/rfc/rfc9083.html)
+- **Cobertura.** La aplicación incluye la copia del [directorio de IANA](https://data.iana.org/rdap/dns.json) publicada el 20 de noviembre de 2026. Para actualizar el directorio empaquetado, reemplaza `datos_dominios/rdap_dns.json` con la copia oficial. Para `.co` y sus categorías como `.com.co` se usa el servicio HTTPS del operador colombiano cuando falta la entrada en IANA. Las redirecciones RDAP mantienen el mismo servidor HTTPS y el dominio consultado. Si falta un servicio compatible o la consulta queda incompleta, el informe indica la limitación. [Descubrimiento de servicios RDAP](https://www.rfc-editor.org/rfc/rfc9224.html) · [Delegación de .co en IANA](https://www.iana.org/domains/root/db/.co.html) · [RDAP del operador .co](https://rdap.registry.co/co/domain/nic.co)
+
+Una consulta DNS fallida deja disponible la evidencia RDAP y viceversa. Un registro antiguo o una respuesta positiva en DNS dejan la autenticidad del enlace por confirmar.
 
 ## Desarrollo y distribución
 
@@ -64,18 +85,24 @@ Las tablas de `datos_dominios` corresponden a la revisión del 20 de noviembre d
 ## Consola
 
 ```powershell
+python main.py --actualizar-reputacion
 python main.py https://example.com
+python main.py https://www.nic.co --dns-rdap
 python main.py https://example.com --inspeccionar
 python main.py https://example.com --captura
 python main.py https://example.com capturas/ejemplo.png --full
 ```
 
-Una URL sola solicita análisis. `--inspeccionar` imprime el informe y usa el código de salida `1` si la inspección queda incompleta. Una ruta de salida, `--captura` o `--full` solicita también la imagen. La consola puede conservar los argumentos en su historial. Para enlaces sensibles, utiliza la ventana de escritorio.
+Una URL sola solicita análisis. `--actualizar-reputacion` se ejecuta sin URL y devuelve `1` si falla alguna fuente. `--inspeccionar` imprime el informe y usa el código de salida `1` si la inspección queda incompleta. Una ruta de salida, `--captura` o `--full` solicita también la imagen. La consola puede conservar los argumentos en su historial. Para enlaces sensibles, utiliza la ventana de escritorio.
+
+`--dns-rdap` añade el informe de consulta externa y muestra cualquier limitación por fuente, conservando los resultados locales.
 
 ## Reutilización
 
 - `analyzers.url_analyzer.analizar_url(texto)` devuelve el destino normalizado, las partes del dominio y señales técnicas. La dirección apta para captura puede contener parámetros privados.
 - `analyzers.brand_analyzer.analizar_marca(url)` acepta una dirección o el resultado del analizador de URL. Devuelve `estado`, `puntos_sugeridos`, `marca` y `explicacion`. Una referencia oficial del catálogo recibe `ausente` y 0 puntos de suplantación. Un indicio de imitación recibe `observado` y 35 puntos sugeridos. Las señales técnicas de la dirección se evalúan por separado.
-- `analisis.analizar(texto)` combina ambos resultados para escritorio y consola y expone el resultado de marca en `analisis_marca`. La interfaz está en `escritorio.py` y la navegación en `captura.py`.
+- `analyzers.reputation.analizar_reputacion(url)` devuelve las evidencias por fuente y `puntos_sugeridos`. `actualizar_listas()` descarga las listas y devuelve el resultado de cada fuente.
+- `analisis.analizar(texto)` combina URL, marca y reputación para escritorio y consola. Expone la reputación en `reputacion` y el resultado de marca en `analisis_marca`. La interfaz está en `escritorio.py` y la navegación en `captura.py`.
+- `analisis.analizar(texto, consultar_dominio=True)` añade `dns_rdap` al resultado. `analyzers.rdap_dns.analizar_dns_rdap(url)` devuelve solo el informe de DNS y RDAP.
 
 `inspeccion.inspeccionar(url)` devuelve los pasos HTTP, el título, los formularios observados y el motivo si la inspección queda incompleta. `inspeccion.describir(resultado)` genera el informe de texto para escritorio y consola.

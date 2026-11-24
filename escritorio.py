@@ -2,10 +2,12 @@ from base64 import b64encode
 from queue import Empty, Queue
 from threading import Thread
 import tkinter as tk
-from tkinter import ttk
+from tkinter import messagebox, ttk
 
 from analisis import analizar
 from analyzers.brand_analyzer import lineas_catalogo
+from analyzers.rdap_dns import lineas_dns_rdap
+from analyzers.reputation import actualizar_listas, lineas_actualizacion, lineas_reputacion
 from captura import imagen
 from inspeccion import describir, inspeccionar
 
@@ -45,6 +47,7 @@ def abrir():
     detalle.pack(side="left", fill="both", expand=True)
     estado = texto("", 10)
     destino = None
+    revisado = False
     ocupado = False
     cola = Queue()
 
@@ -55,16 +58,16 @@ def abrir():
         detalle.configure(state="disabled")
 
     def limpiar(*_):
-        nonlocal destino
+        nonlocal destino, revisado
         destino = None
-        for control in (captura, inspeccion):
+        revisado = False
+        for control in (captura, inspeccion, dns_rdap):
             control.state(["disabled"])
         for etiqueta in (dominio, identidad, aviso, estado):
             etiqueta.configure(text="")
         mostrar_detalle("")
 
     def revisar(*_):
-        nonlocal destino
         if ocupado:
             return
         limpiar()
@@ -73,6 +76,12 @@ def abrir():
         except ValueError as exc:
             aviso.configure(text=str(exc))
             return
+        presentar(resultado)
+
+    def presentar(resultado):
+        nonlocal destino, revisado
+        revisado = True
+        dns_rdap.state(["!disabled"])
         dominio.configure(text="Destino · " + resultado.dominio)
         lineas = []
         if resultado.dominio_registrable:
@@ -81,20 +90,30 @@ def abrir():
             lineas.append("Nombre internacional (Unicode) · " + resultado.dominio_unicode)
         lineas.extend(lineas_catalogo(resultado.coincidencias_marca))
         identidad.configure(text="\n".join(lineas))
-        if resultado.senales:
-            aviso.configure(text="Revisa estas señales antes de continuar", fg="#854805")
-            mostrar_detalle("\n".join("• " + s for s in resultado.senales) +
-                            "\n\nEvita ingresar datos personales. Verifica el enlace por un canal oficial.")
+        alto_riesgo = bool(resultado.reputacion.puntos_sugeridos)
+        if alto_riesgo or resultado.senales:
+            titulo = "Alto riesgo por reputación" if alto_riesgo else "Revisa estas señales antes de continuar"
+            aviso.configure(text=titulo, fg="#854805")
         else:
             aviso.configure(text="Autenticidad sin confirmar", fg="#334b52")
-            mostrar_detalle("El análisis local revisó la dirección. El contenido de la página todavía no se ha inspeccionado.")
+        detalle_analisis = ["• " + s for s in resultado.senales]
+        if detalle_analisis:
+            detalle_analisis.append("")
+        detalle_analisis.extend(("Reputación", *lineas_reputacion(resultado.reputacion)))
+        if alto_riesgo or resultado.senales:
+            detalle_analisis.extend(("", "Evita ingresar datos personales. Verifica el enlace por un canal oficial."))
+        if resultado.dns_rdap:
+            detalle_analisis[:0] = [*lineas_dns_rdap(resultado.dns_rdap), ""]
+        mostrar_detalle("\n".join(detalle_analisis))
         destino = resultado.url_captura
         if destino:
             for control in (captura, inspeccion):
                 control.state(["!disabled"])
-            estado.configure(text="Inspeccionar página y Ver captura visitan el sitio desde tu conexión.")
+            estado.configure(text="DNS/RDAP comparte solo nombres de dominio con Google Public DNS y el registro. "
+                                 "Inspeccionar página y Ver captura visitan el sitio.")
         else:
-            estado.configure(text="Las opciones web requieren una dirección pública sin credenciales.")
+            estado.configure(text="DNS/RDAP comparte solo nombres de dominio con Google Public DNS y el registro. "
+                                 "La visita requiere una dirección pública sin credenciales.")
 
     def recibir(mostrar, error):
         nonlocal ocupado
@@ -104,8 +123,13 @@ def abrir():
             raiz.after(100, recibir, mostrar, error)
             return
         ocupado = False
-        for control in (entrada, boton, captura, inspeccion):
+        for control in (entrada, boton, actualizar):
             control.state(["!disabled"])
+        if revisado:
+            dns_rdap.state(["!disabled"])
+        if destino:
+            for control in (captura, inspeccion):
+                control.state(["!disabled"])
         if datos is None:
             estado.configure(text=error)
         else:
@@ -140,19 +164,18 @@ def abrir():
         resumen = "Inspección incompleta. Consulta el informe." if resultado.limitacion else "Inspección terminada."
         estado.configure(text=resumen)
 
-    def solicitar(operacion, mostrar, progreso, error):
+    def solicitar(operacion, mostrar, progreso, error, *argumentos):
         nonlocal ocupado
-        if not destino or ocupado:
+        if ocupado:
             return
-        url = destino
         ocupado = True
-        for control in (entrada, captura, inspeccion, boton):
+        for control in (entrada, captura, inspeccion, boton, actualizar, dns_rdap):
             control.state(["disabled"])
         estado.configure(text=progreso)
 
         def trabajo():
             try:
-                cola.put(operacion(url))
+                cola.put(operacion(*argumentos))
             except Exception:
                 cola.put(None)
 
@@ -160,11 +183,35 @@ def abrir():
         raiz.after(100, recibir, mostrar, error)
 
     def solicitar_captura():
-        solicitar(imagen, mostrar_captura, "Obteniendo la imagen…", "No se pudo obtener la captura.")
+        if destino:
+            solicitar(imagen, mostrar_captura, "Obteniendo la imagen…", "No se pudo obtener la captura.", destino)
 
     def solicitar_inspeccion():
-        solicitar(inspeccionar, mostrar_inspeccion, "Inspeccionando la página desde tu conexión…",
-                  "No se pudo obtener el informe de inspección.")
+        if destino:
+            solicitar(inspeccionar, mostrar_inspeccion, "Inspeccionando la página desde tu conexión…",
+                      "No se pudo obtener el informe de inspección.", destino)
+
+    def solicitar_dns_rdap():
+        if revisado:
+            solicitar(lambda enlace: analizar(enlace, consultar_dominio=True), presentar,
+                      "Consultando DNS y el registro del dominio…", "No se pudo completar la consulta DNS/RDAP.",
+                      entrada.get())
+
+    def mostrar_actualizacion(resultados):
+        if revisado:
+            revisar()
+        else:
+            estado.configure(text="")
+        informe = "\n".join(lineas_actualizacion(resultados))
+        if any(r.error for r in resultados):
+            messagebox.showwarning("Actualización incompleta", informe, parent=raiz)
+        else:
+            messagebox.showinfo("Listas actualizadas", informe, parent=raiz)
+
+    def actualizar_reputacion():
+        solicitar(actualizar_listas, mostrar_actualizacion,
+                  "Descargando las listas de PhishTank y CERT Polska…",
+                  "No se pudieron actualizar las listas de reputación.")
 
     valor = tk.StringVar()
     entrada.configure(textvariable=valor)
@@ -175,6 +222,12 @@ def abrir():
     inspeccion.pack(side="left", padx=10)
     captura = ttk.Button(acciones, text="Ver captura", command=solicitar_captura, state="disabled")
     captura.pack(side="left")
+    servicios = ttk.Frame(marco)
+    servicios.pack(anchor="w")
+    dns_rdap = ttk.Button(servicios, text="Consultar DNS/RDAP", command=solicitar_dns_rdap, state="disabled")
+    dns_rdap.pack(side="left", padx=(0, 10))
+    actualizar = ttk.Button(servicios, text="Actualizar listas de reputación", command=actualizar_reputacion)
+    actualizar.pack(side="left")
     entrada.bind("<Return>", revisar)
     entrada.focus_set()
     raiz.mainloop()

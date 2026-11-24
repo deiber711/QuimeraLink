@@ -73,9 +73,9 @@ def _leer_y_cerrar_psl(respuesta, **_):
 
 
 @lru_cache(maxsize=2048)
-def separar_dominio(host: str) -> PartesDominio:
+def separar_dominio(host: str, *, incluir_privados: bool = True) -> PartesDominio:
     """Separa un host DNS normalizado con la PSL local y la regla implícita *."""
-    partes = _extractor()(host)
+    partes = _extractor()(host, include_psl_private_domains=incluir_privados)
     if partes.suffix or not partes.subdomain:
         return PartesDominio(partes.subdomain, partes.domain or None, partes.suffix)
     prefijo, sufijo = host.rsplit(".", 1)

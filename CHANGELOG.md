@@ -3,9 +3,13 @@
 ## En desarrollo
 
 - Analizadores de URL y marca separados e integrados en escritorio y consola. La URL se analiza localmente con la lista de sufijos incluida, normalización IDNA y señales para IP literales, credenciales y acortadores.
-- Catálogo local de 197 marcas, entidades y servicios, incluidas Agaval y Falabella Colombia. Registra las fuentes de 262 dominios y hosts y distingue 13 sufijos de autenticación compartida.
+- Catálogo local de 197 marcas, entidades y servicios, incluidas Agaval y Falabella Colombia. Registra 265 referencias de dominios y hosts y distingue 16 sufijos de plataformas de acceso compartidas.
+- Relaciones documentadas entre entidades y proveedores de autenticación en hosts exactos. La inspección identifica el salto al proveedor y muestra las señales de marca de cada destino anunciado.
+- El análisis de marca distingue menciones informativas, imitaciones del nombre y solicitudes de acceso. El informe identifica al proveedor de una plataforma compartida y aclara cuándo la organización cliente sigue sin verificarse.
 - Detección de nombres parecidos y caracteres confusos en dominios y subdominios, con coincidencias oficiales verificadas y 35 puntos sugeridos por indicios de suplantación.
 - La inspección compara dominios registrables en cada redirección, distingue el origen final del destino anunciado y señala HTML que menciona una marca y solicita datos desde un dominio ajeno a su catálogo.
+- Reputación sin conexión con copias actualizables de PhishTank y CERT Polska. El informe registra la fuente, la fecha, el alcance de la coincidencia y la vigencia de la copia, también para destinos anunciados por redirecciones.
+- Consulta opcional DNS/RDAP en escritorio y consola. Registra la respuesta DNS, los datos y la antigüedad disponibles para el dominio, con cobertura para `.co` a través de su operador.
 - Lanzador de desarrollo `iniciar.cmd`, dependencias de pruebas y suite `pytest` para referencias oficiales, redirecciones, imitaciones y enlaces acortados.
 
 ## v1.2
