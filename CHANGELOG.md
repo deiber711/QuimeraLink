@@ -2,6 +2,10 @@
 
 ## En desarrollo
 
+- Dictamen de riesgo en consola con salida JSON mediante `--json`. Incluye el puntaje, los motivos, las fuentes y las limitaciones del análisis.
+- El informe de red muestra los dominios contactados por TCP, los destinos anunciados en las redirecciones y los errores de validación de certificados TLS.
+- Se retira la guía de publicación inicial `GUIA_GITHUB.md`.
+
 - Analizadores de URL y marca separados e integrados en escritorio y consola. La URL se analiza localmente con la lista de sufijos incluida, normalización IDNA y señales para IP literales, credenciales y acortadores.
 - Catálogo local de 197 marcas, entidades y servicios, incluidas Agaval y Falabella Colombia. Registra 265 referencias de dominios y hosts y distingue 16 sufijos de plataformas de acceso compartidas.
 - Relaciones documentadas entre entidades y proveedores de autenticación en hosts exactos. La inspección identifica el salto al proveedor y muestra las señales de marca de cada destino anunciado.
