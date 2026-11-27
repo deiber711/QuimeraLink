@@ -273,10 +273,10 @@ def _guardar(fuente, texto, fecha_lista, descarga):
     return len(indicadores)
 
 
-def actualizar_listas() -> tuple[Actualizacion, ...]:
+def actualizar_listas(fuentes=FUENTES) -> tuple[Actualizacion, ...]:
     """Descarga las listas completas. La operación no recibe enlaces del usuario."""
     resultados = []
-    for fuente in FUENTES:
+    for fuente in fuentes:
         try:
             cantidad = _guardar(fuente, *_descargar(fuente))
         except HTTPError as exc:

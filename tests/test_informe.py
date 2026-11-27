@@ -1,4 +1,5 @@
 import json
+import socket
 import sqlite3
 import sys
 from dataclasses import replace
@@ -12,7 +13,7 @@ from analyzers.rdap_dns import ResultadoDNS, ResultadoDominio, ResultadoRDAP
 from informe import generar_informe
 from inspeccion import inspeccionar
 from main import main
-from test_inspeccion import html, redireccion, simular
+from test_inspeccion import html, redireccion, respuesta, simular
 
 
 @pytest.fixture(autouse=True)
@@ -55,6 +56,42 @@ def test_copia_vencida():
     informe = generar_informe(analizar("alerta.test"))
     assert informe["puntos"] == 0 and informe["cobertura"] == "parcial"
     assert all(e["estado"] == "observado" for e in informe["reputacion"])
+
+
+@pytest.mark.parametrize("fallo,estado", [
+    (404, "pagina_no_encontrada"),
+    (410, "pagina_no_encontrada"),
+    (503, "inaccesible"),
+    (TimeoutError(), "inaccesible"),
+    (socket.gaierror(socket.EAI_NONAME, "Nombre ausente"), "nxdomain"),
+])
+def test_disponibilidad_del_destino_de_la_redireccion(fallo, estado):
+    cargar("alerta.test")
+    final = respuesta(fallo) if isinstance(fallo, int) else fallo
+    with simular(redireccion("https://destino.test/ruta?token=secreto"), final):
+        inspeccion = inspeccionar("https://inicio.test")
+    informe = generar_informe(analizar("inicio.test"), inspeccion)
+
+    assert informe["disponibilidad"]["estado"] == estado
+    assert informe["disponibilidad"]["host"] == "destino.test"
+    assert informe["puntos"] == 0 and informe["cobertura"] == "parcial"
+    if isinstance(fallo, int):
+        assert f"HTTP {fallo}" in informe["disponibilidad"]["detalle"]
+    assert "secreto" not in json.dumps(informe)
+
+
+def test_disponibilidad_no_oculta_la_alerta_de_reputacion():
+    cargar("alerta.test")
+    local = analizar("alerta.test")
+    dns = ResultadoDNS(local.dominio, "nxdomain", "El DNS del sistema no encontró el nombre solicitado.")
+    informe = generar_informe(replace(local, dns_sistema=dns))
+
+    assert informe["disponibilidad"]["estado"] == "nxdomain"
+    assert informe["nivel"] == "Alto riesgo" and informe["puntos"] == 70
+
+    with simular(html(b"<title>En servicio</title>")):
+        inspeccion = inspeccionar("https://alerta.test")
+    assert generar_informe(replace(local, dns_sistema=dns), inspeccion)["disponibilidad"] is None
 
 
 def test_redireccion_repeticion_de_senales_y_limite():

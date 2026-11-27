@@ -1,14 +1,16 @@
 # Detector de phishing · v1.2 para Windows
 
-Abre el ejecutable **DetectorDePhishing.exe**, pega un enlace y pulsa **Analizar enlace**. El programa muestra el nombre de host de destino, el dominio registrable cuando existe y las señales encontradas. Revisa la dirección en tu equipo sin abrirla, enviarla a un servicio ni guardar un historial. Un resultado sin señales deja la autenticidad del sitio sin confirmar.
+Abre **DetectorDePhishing.exe**, pega el enlace y pulsa **Analizar enlace**. En una sola revisión se examinan la dirección, posibles imitaciones de marcas, denuncias conocidas, la antigüedad del sitio, las redirecciones y los formularios. El resultado muestra los puntos de riesgo observados sobre 100, los motivos, qué hacer y qué información faltó. Los puntos expresan el peso de los indicios encontrados. Una revisión parcial puede tener cero puntos.
 
-Pulsa **Actualizar listas de reputación** para consultar a los proveedores y guardar sus listas en el equipo. Después, **Analizar enlace** busca coincidencias en esas copias incluso sin conexión. La actualización descarga listas completas y prescinde de la dirección que esté en el campo de texto.
+La revisión consulta el nombre del sitio con el DNS del sistema, Google Public DNS y el operador de su registro. La inspección visita la dirección desde tu conexión. Los proveedores de las listas reciben solicitudes de descarga de sus listas completas. La comparación con el enlace se hace en tu equipo. Las copias se guardan en SQLite y la aplicación conserva el resultado de la revisión en memoria.
 
-Después de analizar el enlace, **Consultar DNS/RDAP** comprueba el host y busca el registro del dominio. Google Public DNS y el operador del registro reciben los nombres consultados y ven la IP de la conexión. El programa conserva la consulta en memoria y omite la ruta, parámetros, fragmento y credenciales.
+**Ver informe detallado** abre las evidencias, las puntuaciones individuales y las limitaciones. Desde allí puedes guardar el dictamen como JSON. **Configuración → Incluir una captura de la página** añade una imagen del enlace original al resultado. La captura empieza desactivada. La aplicación recuerda esa preferencia entre sesiones.
 
-**Inspeccionar página** visita el enlace desde tu conexión. Muestra los orígenes y estados HTTP del recorrido, el origen final, su dominio registrable, el título y los destinos declarados por los formularios del HTML estático. Sigue hasta cinco redirecciones y valida cada salto antes de conectarse. Señala los cambios de dominio registrable y los saltos de HTTPS a HTTP, así como los formularios con campos de contraseña o datos financieros que apuntan a otro origen o a una dirección HTTP. Si el recorrido se interrumpe, identifica el último origen que respondió e indica el destino anunciado cuando el servidor lo proporcionó en una redirección válida. La inspección usa solicitudes GET, sin ejecutar JavaScript, cargar recursos de la página ni enviar formularios.
+La inspección muestra los orígenes y estados HTTP del recorrido, el origen final, su dominio registrable, el título y los destinos declarados por los formularios del HTML estático. Sigue hasta cinco redirecciones y valida cada salto antes de conectarse. Señala los cambios de dominio registrable y los saltos de HTTPS a HTTP, así como los formularios con campos de contraseña o datos financieros que apuntan a otro origen o a una dirección HTTP. Si el recorrido se interrumpe, identifica el último origen que respondió e indica el destino anunciado cuando el servidor lo proporcionó en una redirección válida. La inspección usa solicitudes GET, sin ejecutar JavaScript, cargar recursos de la página ni enviar formularios.
 
 Para identificar campos sensibles, el inspector lee el tipo de control, las indicaciones de autocompletado, los nombres y las etiquetas. Reconoce, entre otros, números de tarjeta, códigos de seguridad e identificadores de cuenta bancaria. Comprueba el origen declarado por el formulario y las alternativas de sus botones, incluidos los controles asociados mediante `form`. Los formularios y destinos creados por JavaScript quedan fuera del análisis estático.
+
+La inspección distingue una página que el servidor no encuentra (HTTP 404 o 410) de un fallo de conexión o una respuesta que impide el acceso. El aviso de disponibilidad aparece en el dictamen y en la exportación JSON. Su resultado no suma puntos de phishing.
 
 El informe de red enumera los dominios con los que se estableció una conexión TCP, en orden de primer contacto. Cada redirección muestra el origen anunciado, incluso si el siguiente salto quedó bloqueado. Si la validación del certificado falla, la inspección se detiene y muestra el origen afectado y el motivo disponible. HTTPS cifra la conexión. La legitimidad del sitio requiere evidencia adicional.
 
@@ -16,7 +18,7 @@ El sitio puede ver tu IP y recibir los identificadores presentes en el enlace. L
 
 La inspección también contrasta las marcas mencionadas en el título o en texto cercano a una solicitud con el dominio de la página. La señal requiere evidencia de un campo para datos personales o credenciales en el HTML recibido.
 
-**Ver captura** visita la dirección desde tu conexión. El sitio puede ver tu IP y recibir identificadores incluidos en el enlace. La vista previa muestra una imagen en memoria. Usa un perfil temporal de Chromium con su sandbox, JavaScript habilitado para dibujar la página y descargas deshabilitadas. Solo solicita recursos HTTP o HTTPS públicos, incluidos estilos, fuentes e imágenes de otros dominios, sin seguir redirecciones HTTP ni pulsar botones. Algunas páginas se verán incompletas o no cargarán. Cierra la ventana para descartar la imagen.
+La captura opcional vuelve a visitar la dirección desde tu conexión. El sitio puede ver tu IP y recibir identificadores incluidos en el enlace. La vista previa muestra una imagen en memoria. Usa un perfil temporal de Chromium con su sandbox, JavaScript habilitado para dibujar la página y descargas deshabilitadas. Solo solicita recursos HTTP o HTTPS públicos, incluidos estilos, fuentes e imágenes de otros dominios, sin seguir redirecciones HTTP ni pulsar botones. Algunas páginas se verán incompletas o no cargarán. Cierra la ventana para descartar la imagen.
 
 ## Alcance de las reglas
 
@@ -40,11 +42,11 @@ El archivo [datos_dominios/marcas.json](datos_dominios/marcas.json) registra mar
 
 ## Reputación
 
-- **PhishTank.** Compara la URL exacta con el CSV de URLs verificadas y activas, que la fuente publica cada hora. La comparación normaliza el host a ASCII, el puerto predeterminado y la ruta raíz. Conserva el esquema, la ruta, los parámetros y el fragmento. La actualización es manual para respetar los límites de descarga sin clave. [Documentación de PhishTank](https://phishtank.org/developer_info.php) · [Términos de PhishTank](https://phishtank.org/terms.php)
+- **PhishTank.** Compara la URL exacta con el CSV de URLs verificadas y activas, que la fuente publica cada hora. La comparación normaliza el host a ASCII, el puerto predeterminado y la ruta raíz. Conserva el esquema, la ruta, los parámetros y el fragmento. El escritorio intenta renovar las copias pendientes. Los intentos automáticos de cada fuente están separados por al menos 15 minutos dentro de la sesión. [Documentación de PhishTank](https://phishtank.org/developer_info.php) · [Términos de PhishTank](https://phishtank.org/terms.php)
 - **CERT Polska.** Compara el nombre de host con la lista de dominios activos. Un dominio listado cubre sus subdominios por etiquetas completas. Una entrada `acceso.example.com` cubre `www.acceso.example.com`, y `example.com` requiere su propia entrada. La fuente se centra en campañas dirigidas a usuarios en Polonia. [Lista de advertencias de CERT Polska](https://cert.pl/en/warning-list/)
 - **Otras fuentes evaluadas.** OpenPhish Community publica una selección limitada cada 12 horas bajo términos de uso personal. El CSIRT de la Policía Nacional de Colombia publica alertas e indicadores por campaña que sirven para revisar la cobertura local. [Planes de OpenPhish](https://www.openphish.com/phishing_feeds.html) · [Términos de OpenPhish](https://openphish.com/terms.html) · [Alertas del CSIRT-PONAL](https://cc-csirt.policia.gov.co/alertas-tips)
 
-El informe registra la fecha de consulta, la fecha de la copia y, cuando la fuente la facilita, la fecha de verificación del indicador. Las fechas se muestran en UTC. El programa considera vigentes las copias de hasta **24 horas**, calculadas desde `Last-Modified` o, cuando falta esa cabecera, desde la descarga. Este límite es una decisión del proyecto para la consulta manual. Una coincidencia vigente muestra **Alto riesgo por reputación** y aporta 70 puntos sugeridos en total aunque coincidan las dos fuentes. Una coincidencia en una copia vencida se conserva como antecedente con 0 puntos.
+El informe registra la fecha de consulta, la fecha de la copia y, cuando la fuente la facilita, la fecha de verificación del indicador. Las fechas se muestran en UTC. El programa considera vigentes las copias de hasta **24 horas**, calculadas desde `Last-Modified` o, cuando falta esa cabecera, desde la descarga. Este límite define la vigencia de la evidencia de reputación. Una coincidencia vigente muestra **Alto riesgo por reputación** y aporta 70 puntos sugeridos en total aunque coincidan las dos fuentes. Una coincidencia en una copia vencida se conserva como antecedente con 0 puntos.
 
 Si una copia falta o está vencida, una consulta sin coincidencia tiene estado `desconocido`. Si falla la lectura, tiene estado `error`. **La ausencia en una lista no confirma la legitimidad del enlace.** Durante una inspección web, el informe también muestra las coincidencias locales de los destinos anunciados por las redirecciones.
 
@@ -62,7 +64,9 @@ Una consulta DNS fallida deja disponible la evidencia RDAP y viceversa. Un regis
 
 Para abrir el programa durante el desarrollo en Windows, haz doble clic en `iniciar.cmd`. El archivo usa el Python de `.venv` cuando ese entorno existe en la carpeta del proyecto.
 
-Desde Windows con Python 3.10 o superior y Tkinter:
+La interfaz de escritorio usa Qt para Python (PySide6). El flujo de un clic se puede reutilizar con `revision.analizar_completo(enlace)`. La consola conserva los modos de consulta seleccionados mediante sus opciones.
+
+Desde Windows con Python 3.10 o superior:
 
 ```powershell
 python -m venv .venv

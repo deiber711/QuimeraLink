@@ -1,4 +1,5 @@
 # Dependencias directas.
+PySide6-Essentials==6.12.0
 playwright==1.65.2
 idna==3.20
 tldextract==5.4.0

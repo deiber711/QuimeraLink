@@ -8,6 +8,7 @@ from ipaddress import ip_address
 import socket
 import ssl
 from time import monotonic
+from typing import Literal
 import unicodedata
 from urllib.parse import quote, urljoin, urlsplit, urlunsplit
 
@@ -16,7 +17,7 @@ from analyzers.brand_analyzer import cliente_de_proveedor, es_opcion_de_proveedo
 from analyzers.html_analyzer import Formulario, FormulariosHTML
 from analyzers.reputation import ResultadoReputacion, lineas_reputacion
 from dominios import dominio_registrable, normalizar_dominio
-from red import DestinoNoPublico, plazo_restante as _restante, resolver_publico, solicitar_publico
+from red import DestinoNoPublico, estado_error_dns, plazo_restante as _restante, resolver_publico, solicitar_publico
 
 
 MAX_REDIRECCIONES = 5
@@ -47,6 +48,7 @@ class Inspeccion:
     limitacion: str | None
     senales_contenido: tuple[str, ...] = ()
     dominios_contactados: tuple[str, ...] = ()
+    fallo_acceso: Literal['nxdomain', 'sin_direccion', 'inaccesible'] | None = None
 
 
 class _Pagina(HTMLParser):
@@ -289,6 +291,7 @@ def inspeccionar(url: str) -> Inspeccion:
     visitados = set()
     titulo = formularios = limitacion = None
     senales_contenido = ()
+    fallo_acceso = None
     while destino not in visitados:
         visitados.add(destino)
         origen_actual = _origen(destino)
@@ -331,13 +334,18 @@ def inspeccionar(url: str) -> Inspeccion:
                     break
         except ssl.SSLCertVerificationError as exc:
             limitacion = f'Certificado TLS rechazado en {origen_actual} · {_error_certificado(exc)}.'
+            fallo_acceso = 'inaccesible'
             break
         except ERRORES_RED as exc:
             limitacion = _motivo_red(exc, limite)
+            if pasos[-1].estado is None and not isinstance(exc, DestinoNoPublico):
+                estado = estado_error_dns(exc) if isinstance(exc, socket.gaierror) else 'error'
+                fallo_acceso = 'inaccesible' if estado == 'error' else estado
             break
     else:
         limitacion = 'Se detectó un ciclo de redirecciones.'
-    return Inspeccion(tuple(pasos), titulo, formularios, limitacion, senales_contenido, tuple(contactados))
+    return Inspeccion(tuple(pasos), titulo, formularios, limitacion, senales_contenido, tuple(contactados),
+                      fallo_acceso=fallo_acceso)
 
 
 def _registrable(host):

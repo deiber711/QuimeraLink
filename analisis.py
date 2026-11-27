@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 from analyzers.brand_analyzer import CoincidenciaMarca, ResultadoMarca, analizar_marca
-from analyzers.rdap_dns import ResultadoDominio, analizar_dns_rdap
+from analyzers.rdap_dns import ResultadoDNS, ResultadoDominio, analizar_dns_rdap, analizar_dns_sistema
 from analyzers.reputation import ResultadoReputacion, analizar_reputacion
 from analyzers.url_analyzer import analizar_url
 
@@ -18,9 +18,10 @@ class Resultado:
     analisis_marca: ResultadoMarca | None = None
     reputacion: ResultadoReputacion = ResultadoReputacion(())
     dns_rdap: ResultadoDominio | None = None
+    dns_sistema: ResultadoDNS | None = None
 
 
-def analizar(texto: str, *, consultar_dominio: bool = False) -> Resultado:
+def analizar(texto: str, *, consultar_dominio: bool = False, verificar_dns: bool = False) -> Resultado:
     url = analizar_url(texto)
     marca = analizar_marca(url)
     reputacion = analizar_reputacion(url)
@@ -34,4 +35,5 @@ def analizar(texto: str, *, consultar_dominio: bool = False) -> Resultado:
         analisis_marca=marca,
         reputacion=reputacion,
         dns_rdap=analizar_dns_rdap(url) if consultar_dominio else None,
+        dns_sistema=analizar_dns_sistema(url) if verificar_dns else None,
     )

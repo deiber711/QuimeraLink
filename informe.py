@@ -8,6 +8,39 @@ from dominios import dominio_registrable
 from inspeccion import Inspeccion, senales_redirecciones
 
 
+_MENSAJES_DISPONIBILIDAD = {
+    "nxdomain": "El sitio probablemente no existe.",
+    "sin_direccion": "El sitio no tiene una dirección DNS confirmada.",
+    "pagina_no_encontrada": "La página no se encontró en el sitio.",
+    "inaccesible": "No se pudo acceder a la página.",
+    "desconocido": "No se pudo comprobar la disponibilidad del sitio.",
+}
+
+
+def _disponibilidad(resultado, inspeccion):
+    if inspeccion and inspeccion.pasos:
+        paso = inspeccion.pasos[-1]
+        host = urlsplit(paso.origen).hostname
+        if paso.estado in (404, 410):
+            return "pagina_no_encontrada", host, f"{paso.origen} respondió con HTTP {paso.estado}."
+        if paso.estado is not None and 400 <= paso.estado < 600:
+            return "inaccesible", host, f"{paso.origen} respondió con HTTP {paso.estado}."
+        if inspeccion.fallo_acceso:
+            return inspeccion.fallo_acceso, host, inspeccion.limitacion
+        if any(p.estado is not None for p in inspeccion.pasos):
+            return None
+
+    dns_externo = resultado.dns_rdap.dns if resultado.dns_rdap else None
+    dns = dns_externo if dns_externo and dns_externo.estado not in ("desconocido", "error") else (
+        resultado.dns_sistema or dns_externo
+    )
+    if dns and dns.estado != "resuelve":
+        estado = "desconocido" if dns.estado == "error" else dns.estado
+        detalle = f"DNS · {dns.explicacion}" if dns is dns_externo else dns.explicacion
+        return estado, dns.host, detalle
+    return None
+
+
 def _reglas_formularios(inspeccion, marca_final):
     if not inspeccion.formularios or not inspeccion.pasos:
         return
@@ -88,6 +121,12 @@ def generar_informe(resultado: Resultado, inspeccion: Inspeccion | None = None) 
             reglas.append(("registro_reciente", 10, f"El dominio fue registrado hace {edad} días."))
     if inspeccion:
         reglas.extend(_reglas_formularios(inspeccion, marca_final))
+    disponibilidad = None
+    if problema := _disponibilidad(resultado, inspeccion):
+        estado, host, detalle = problema
+        disponibilidad = dict(estado=estado, host=host, mensaje=_MENSAJES_DISPONIBILIDAD[estado], detalle=detalle)
+        if detalle:
+            limitaciones.append(detalle)
     puntos = min(100, sum(p for _, p, _ in reglas))
     if puntos >= 70:
         nivel = "Alto riesgo"
@@ -101,6 +140,7 @@ def generar_informe(resultado: Resultado, inspeccion: Inspeccion | None = None) 
         nivel = "Sin indicadores detectados"
     return dict(version_reglas=1, dominio=resultado.dominio, puntos=puntos, nivel=nivel,
                 cobertura="parcial" if limitaciones else "completa para el modo solicitado",
+                disponibilidad=disponibilidad,
                 dns_rdap_solicitado=dominio is not None, inspeccion_solicitada=inspeccion is not None,
                 dns_rdap=(dict(dns=dominio.dns.estado, rdap=dominio.rdap.estado,
                                antiguedad_dias=dominio.rdap.antiguedad_dias,

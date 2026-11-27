@@ -65,6 +65,8 @@ def main() -> int:
 def _imprimir(resultado, inspeccion, informe):
     print(f"{informe['nivel']} · {informe['puntos']}/100 · Cobertura {informe['cobertura']}")
     print("Destino:", resultado.dominio)
+    if aviso := informe["disponibilidad"]:
+        print(f"{aviso['host']} · {aviso['mensaje']}")
     if resultado.dominio_registrable:
         print("Dominio registrable:", resultado.dominio_registrable)
     if resultado.dominio_unicode:

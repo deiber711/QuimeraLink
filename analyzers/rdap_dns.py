@@ -5,6 +5,7 @@ from functools import cache
 from http.client import HTTPException
 from ipaddress import ip_address
 import json
+import socket
 import ssl
 from time import monotonic
 from typing import Literal
@@ -13,7 +14,7 @@ from urllib.parse import urlencode, urljoin, urlsplit
 
 from analyzers.url_analyzer import ResultadoURL, analizar_url
 from dominios import DATOS, normalizar_dominio, separar_dominio
-from red import DestinoNoPublico, plazo_restante, solicitar_publico
+from red import DestinoNoPublico, estado_error_dns, plazo_restante, resolver_publico, solicitar_publico
 
 
 DNS = 'https://dns.google/resolve'
@@ -52,6 +53,29 @@ class ResultadoDominio:
     dns: ResultadoDNS
     rdap: ResultadoRDAP
     registro_de_plataforma: bool = False
+
+
+def analizar_dns_sistema(url: ResultadoURL) -> ResultadoDNS | None:
+    host = url.dominio
+    if url.es_ip_literal or '.' not in host or host.rsplit('.', 1)[-1] in SUFIJOS_LOCALES:
+        return None
+    try:
+        resolver_publico(host + '.', 443, timeout=4)
+    except socket.gaierror as exc:
+        estado = estado_error_dns(exc)
+        detalle = {
+            'nxdomain': 'El DNS del sistema no encontró el nombre solicitado.',
+            'sin_direccion': 'El DNS del sistema no encontró una dirección para el nombre solicitado.',
+            'error': 'El DNS del sistema no pudo completar la consulta.',
+        }
+        return ResultadoDNS(host, estado, detalle[estado])
+    except DestinoNoPublico:
+        return ResultadoDNS(host, 'desconocido', 'El DNS del sistema no devolvió un destino web público.')
+    except TimeoutError:
+        return ResultadoDNS(host, 'error', 'La consulta al DNS del sistema agotó el tiempo de espera.')
+    except OSError:
+        return ResultadoDNS(host, 'error', 'Falló la consulta al DNS del sistema.')
+    return ResultadoDNS(host, 'resuelve', 'El DNS del sistema encontró una dirección pública.')
 
 
 def _filas(datos, campo):

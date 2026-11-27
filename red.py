@@ -6,6 +6,7 @@ from queue import Empty, Queue
 import socket
 from threading import BoundedSemaphore, Thread, Timer
 from time import monotonic
+from typing import Literal
 from urllib.parse import urlsplit, urlunsplit
 
 
@@ -14,6 +15,14 @@ class DestinoNoPublico(ValueError):
 
 
 _consultas_dns = BoundedSemaphore(4)
+
+
+def estado_error_dns(error: socket.gaierror) -> Literal['nxdomain', 'sin_direccion', 'error']:
+    if error.errno == socket.EAI_NONAME:
+        return 'nxdomain'
+    if error.errno == getattr(socket, 'EAI_NODATA', 11004):
+        return 'sin_direccion'
+    return 'error'
 
 
 def _es_publica(ip):
