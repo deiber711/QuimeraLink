@@ -15,7 +15,7 @@ from inspeccion import describir, inspeccionar
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Analiza enlaces localmente, inspecciona la página o solicita una captura.")
+    parser = argparse.ArgumentParser(description="QuimeraLink analiza enlaces localmente, inspecciona la página o solicita una captura.")
     parser.add_argument("url", nargs="?")
     parser.add_argument("--json", action="store_true", help="Imprimir el dictamen como JSON")
     parser.add_argument("salida", nargs="?", help="Ruta PNG para solicitar una captura")

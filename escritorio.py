@@ -226,12 +226,12 @@ def pendientes(revision):
 class Ventana(QWidget):
     def __init__(self, ajustes=None):
         super().__init__()
-        self.setWindowTitle("PhishGuard · Revisión de enlaces")
+        self.setWindowTitle("QuimeraLink · Revisión de enlaces")
         self.setObjectName("base")
         self.setStyleSheet(ESTILO)
         self.resize(900, 790)
         self.setMinimumSize(530, 460)
-        self.ajustes = ajustes if ajustes is not None else QSettings("PhishGuard", "Escritorio")
+        self.ajustes = ajustes if ajustes is not None else QSettings("QuimeraLink", "Escritorio")
         self.revision = None
         self.ocupado = False
         raiz = QVBoxLayout(self)
@@ -242,7 +242,7 @@ class Ventana(QWidget):
         nav = QHBoxLayout(barra)
         nav.setContentsMargins(26, 12, 26, 12)
         nav.addWidget(Escudo())
-        nav.addWidget(etiqueta("PhishGuard", "marca"))
+        nav.addWidget(etiqueta("QuimeraLink", "marca"))
         nav.addStretch()
         self.config = QPushButton("Configuración")
         nav.addWidget(self.config)
@@ -497,7 +497,7 @@ class Ventana(QWidget):
             lineas.extend(["", "DNS del sistema", r.dns_sistema.explicacion])
         lineas.extend(["", *lineas_dns_rdap(r.dns_rdap), "", describir(revision.inspeccion)])
         dialogo = QDialog(self)
-        dialogo.setWindowTitle("Informe detallado · PhishGuard")
+        dialogo.setWindowTitle("Informe detallado · QuimeraLink")
         caja = QVBoxLayout(dialogo)
         caja.addWidget(etiqueta("Informe detallado", "nivel"))
         texto = QTextEdit()

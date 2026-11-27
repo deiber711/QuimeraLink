@@ -2,6 +2,8 @@
 
 ## En desarrollo
 
+- El programa, el ejecutable de Windows y el repositorio adoptan el nombre QuimeraLink.
+
 - Dictamen de riesgo en consola con salida JSON mediante `--json`. Incluye el puntaje, los motivos, las fuentes y las limitaciones del análisis.
 - El informe de red muestra los dominios contactados por TCP, los destinos anunciados en las redirecciones y los errores de validación de certificados TLS.
 - Se retira la guía de publicación inicial `GUIA_GITHUB.md`.

@@ -67,7 +67,7 @@ def _ahora():
 
 def _base_local():
     local = os.environ.get("LOCALAPPDATA")
-    carpeta = Path(local) / "PhishGuard" if local else Path.home() / ".phishguard"
+    carpeta = Path(local) / "QuimeraLink" if local else Path.home() / ".quimeralink"
     return carpeta / "reputacion.sqlite3"
 
 
@@ -179,7 +179,7 @@ class _RedireccionLista(HTTPRedirectHandler):
 
 def _descargar(fuente):
     solicitud = Request(fuente.descarga, headers={
-        "User-Agent": "phishtank/PhishGuard" if fuente == PHISHTANK else "PhishGuard",
+        "User-Agent": "phishtank/QuimeraLink" if fuente == PHISHTANK else "QuimeraLink",
         "Accept-Encoding": "identity",
         "Cache-Control": "no-cache",
     })

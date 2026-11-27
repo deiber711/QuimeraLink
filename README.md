@@ -1,6 +1,6 @@
-# Detector de phishing · v1.2 para Windows
+# QuimeraLink · v1.2 para Windows
 
-Abre **DetectorDePhishing.exe**, pega el enlace y pulsa **Analizar enlace**. En una sola revisión se examinan la dirección, posibles imitaciones de marcas, denuncias conocidas, la antigüedad del sitio, las redirecciones y los formularios. El resultado muestra los puntos de riesgo observados sobre 100, los motivos, qué hacer y qué información faltó. Los puntos expresan el peso de los indicios encontrados. Una revisión parcial puede tener cero puntos.
+Abre **QuimeraLink.exe**, pega el enlace y pulsa **Analizar enlace**. En una sola revisión se examinan la dirección, posibles imitaciones de marcas, denuncias conocidas, la antigüedad del sitio, las redirecciones y los formularios. El resultado muestra los puntos de riesgo observados sobre 100, los motivos, qué hacer y qué información faltó. Los puntos expresan el peso de los indicios encontrados. Una revisión parcial puede tener cero puntos.
 
 La revisión consulta el nombre del sitio con el DNS del sistema, Google Public DNS y el operador de su registro. La inspección visita la dirección desde tu conexión. Los proveedores de las listas reciben solicitudes de descarga de sus listas completas. La comparación con el enlace se hace en tu equipo. Las copias se guardan en SQLite y la aplicación conserva el resultado de la revisión en memoria.
 
@@ -50,7 +50,7 @@ El informe registra la fecha de consulta, la fecha de la copia y, cuando la fuen
 
 Si una copia falta o está vencida, una consulta sin coincidencia tiene estado `desconocido`. Si falla la lectura, tiene estado `error`. **La ausencia en una lista no confirma la legitimidad del enlace.** Durante una inspección web, el informe también muestra las coincidencias locales de los destinos anunciados por las redirecciones.
 
-La caché de Windows se guarda en `%LOCALAPPDATA%\PhishGuard\reputacion.sqlite3`. Conserva dominios de CERT Polska y huellas SHA-256 de las URLs publicadas por PhishTank. Cada fuente se actualiza de forma independiente y un fallo conserva su última copia. El programa mantiene en memoria la consulta del usuario y omite las rutas, parámetros y fragmentos en el informe de reputación.
+La caché de Windows se guarda en `%LOCALAPPDATA%\QuimeraLink\reputacion.sqlite3`. Conserva dominios de CERT Polska y huellas SHA-256 de las URLs publicadas por PhishTank. Cada fuente se actualiza de forma independiente y un fallo conserva su última copia. El programa mantiene en memoria la consulta del usuario y omite las rutas, parámetros y fragmentos en el informe de reputación.
 
 ## DNS y RDAP
 
@@ -84,7 +84,7 @@ python -m pip install pyinstaller
 .\construir.ps1
 ```
 
-El archivo resultante es `dist/DetectorDePhishing.exe`. Incluye Python, la interfaz, Chromium y las tablas de sufijos y Unicode para el análisis sin conexión. El usuario solo necesita el ejecutable. La compilación usa la revisión de Chromium correspondiente a la versión de Playwright instalada.
+El archivo resultante es `dist/QuimeraLink.exe`. Incluye Python, la interfaz, Chromium y las tablas de sufijos y Unicode para el análisis sin conexión. El usuario solo necesita el ejecutable. La compilación usa la revisión de Chromium correspondiente a la versión de Playwright instalada.
 
 Las tablas de `datos_dominios` corresponden a la revisión del 20 de noviembre de 2026 de la Public Suffix List y a la versión 16.0.0 de la tabla de caracteres confusos de Unicode. Los archivos incluyen las licencias correspondientes. [Revisión de la PSL](https://github.com/publicsuffix/list/commit/d7d7f1fd55166aaf73ad2f526e72634490acd9c8) · [Tabla Unicode 16.0.0](https://www.unicode.org/Public/security/16.0.0/confusables.txt)
 
